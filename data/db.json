@@ -1,9 +1,83 @@
 {
-  "products": [
+  "users": [
     {
       "id": 1,
-      "name": "Product 1",
-      "price": 100
+      "name": "Alice Admin",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "role": "admin",
+      "address": "1 Admin Plaza",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "name": "Charlie Customer",
+      "email": "customer@example.com",
+      "password": "cust123",
+      "role": "customer",
+      "address": "22 Nile St, Cairo",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "name": "Sam Seller",
+      "email": "seller@example.com",
+      "password": "sell123",
+      "role": "seller",
+      "address": "Mall Shop 7, Giza",
+      "isActive": true
+    }
+  ],
+  "products": [
+    {
+      "id": 101,
+      "sellerId": 3,
+      "name": "Wireless Mouse",
+      "description": "Ergonomic wireless mouse with 2.4GHz USB dongle",
+      "category": "Electronics",
+      "price": 25.99,
+      "stock": 100,
+      "approved": true,
+      "image": "mouse.jpg",
+      "createdAt": "2025-04-28T10:00:00Z"
+    },
+    {
+      "id": 102,
+      "sellerId": 3,
+      "name": "Mechanical Keyboard",
+      "description": "RGB Backlit mechanical keyboard with blue switches",
+      "category": "Electronics",
+      "price": 45.0,
+      "stock": 50,
+      "approved": false,
+      "image": "keyboard.jpg",
+      "createdAt": "2025-04-28T11:00:00Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": 501,
+      "customerId": 2,
+      "products": [
+        {
+          "productId": 101,
+          "quantity": 2,
+          "priceAtPurchase": 25.99
+        }
+      ],
+      "total": 51.98,
+      "status": "pending",
+      "createdAt": "2025-04-29T12:30:00Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 901,
+      "productId": 101,
+      "userId": 2,
+      "rating": 5,
+      "comment": "Very smooth and responsive!",
+      "createdAt": "2025-04-29T14:20:00Z"
     }
   ]
 }

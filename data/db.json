@@ -1,37 +1,50 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Alice Admin",
       "email": "admin@example.com",
       "password": "admin123",
       "role": "admin",
       "address": "1 Admin Plaza",
+      "phone": "01002136997",
       "isActive": true
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Charlie Customer",
       "email": "customer@example.com",
       "password": "cust123",
       "role": "customer",
       "address": "22 Nile St, Cairo",
+      "phone": "01002136997",
       "isActive": true
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Sam Seller",
       "email": "seller@example.com",
       "password": "sell123",
       "role": "seller",
       "address": "Mall Shop 7, Giza",
+      "phone": "01002136997",
+      "isActive": true
+    },
+    {
+      "id": "8b6b",
+      "name": "Mohammad",
+      "email": "mohammadashraf5000@gmail.com",
+      "password": "aksdlaskjh4",
+      "role": "seller",
+      "address": "hehe st , meheheh ave ,5th hehe district",
+      "phone": "01021310778",
       "isActive": true
     }
   ],
   "products": [
     {
-      "id": 101,
-      "sellerId": 3,
+      "id": "101",
+      "sellerId": "3",
       "name": "Wireless Mouse",
       "description": "Ergonomic wireless mouse with 2.4GHz USB dongle",
       "category": "Electronics",
@@ -42,12 +55,12 @@
       "createdAt": "2025-04-28T10:00:00Z"
     },
     {
-      "id": 102,
-      "sellerId": 3,
+      "id": "102",
+      "sellerId": "3",
       "name": "Mechanical Keyboard",
       "description": "RGB Backlit mechanical keyboard with blue switches",
       "category": "Electronics",
-      "price": 45.0,
+      "price": 45,
       "stock": 50,
       "approved": false,
       "image": "keyboard.jpg",
@@ -56,11 +69,11 @@
   ],
   "orders": [
     {
-      "id": 501,
-      "customerId": 2,
+      "id": "501",
+      "customerId": "2",
       "products": [
         {
-          "productId": 101,
+          "productId": "101",
           "quantity": 2,
           "priceAtPurchase": 25.99
         }

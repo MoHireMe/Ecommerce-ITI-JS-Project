@@ -5,6 +5,7 @@ export async function registerUser(userData) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userData),
   });
+  if (!res) throw new Error("Service Is Down");
   if (!res.ok) throw new Error("Registration failed");
   return await res.json();
 }
@@ -20,6 +21,13 @@ export async function loginUser(email, password, rememberMe = false) {
   const storage = rememberMe ? localStorage : sessionStorage;
   storage.setItem("currentUser", JSON.stringify(user));
   return user;
+}
+
+export async function userExists(email) {
+  const res = await fetch(`/users?email=${email}`);
+  const users = await res.json();
+
+  return users && users.length > 0;
 }
 
 export function logoutUser() {

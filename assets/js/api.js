@@ -4,6 +4,3 @@ export async function fetchProducts() {
   return data.products;
 }
 
-export async function saveOrder(order) {
-  console.log("Saving order:", order);
-}

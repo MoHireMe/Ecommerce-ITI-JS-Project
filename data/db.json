@@ -18,7 +18,7 @@
       "role": "customer",
       "address": "22 Nile St, Cairo",
       "phone": "01002136997",
-      "isActive": true
+      "isActive": false
     },
     {
       "id": "3",
@@ -43,34 +43,154 @@
   ],
   "products": [
     {
-      "id": "101",
-      "sellerId": "3",
+      "id": 101,
+      "sellerId": 3,
       "name": "Wireless Mouse",
       "description": "Ergonomic wireless mouse with 2.4GHz USB dongle",
       "category": "Electronics",
       "price": 25.99,
       "stock": 100,
       "approved": true,
-      "image": "https://m.media-amazon.com/images/I/61U4Qj2jqmL._AC_SL1500_.jpg",
+      "image": "mouse.jpg",
       "createdAt": "2025-04-28T10:00:00Z"
     },
     {
-      "id": "102",
-      "sellerId": "3",
+      "id": 102,
+      "sellerId": 3,
       "name": "Mechanical Keyboard",
       "description": "RGB Backlit mechanical keyboard with blue switches",
       "category": "Electronics",
-      "price": 45,
+      "price": 45.0,
       "stock": 50,
-      "approved": true,
+      "approved": false,
       "image": "keyboard.jpg",
       "createdAt": "2025-04-28T11:00:00Z"
+    },
+    {
+      "id": 201,
+      "sellerId": 10,
+      "name": "Bluetooth Speaker",
+      "description": "High-quality bluetooth speaker suitable for everyday use.",
+      "category": "Electronics",
+      "price": 85.65,
+      "stock": 146,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1592176773171-d526c1712e83?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8MjV8fGVsZWN0cm9uaWN8ZW58MHx8fHwxNjEyNTk0Mjc2&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:21:00Z"
+    },
+    {
+      "id": 202,
+      "sellerId": 10,
+      "name": "Wireless Charger",
+      "description": "High-quality wireless charger suitable for everyday use.",
+      "category": "Electronics",
+      "price": 66.08,
+      "stock": 71,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1584676125735-b173fb92a64e?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8MTV8fGNvbXB1dGVyfGVsZWdpc2llc3wwfHx8fHwxNjEyNTk2MTEx&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:22:00Z"
+    },
+    {
+      "id": 203,
+      "sellerId": 10,
+      "name": "Smartphone Stand",
+      "description": "High-quality smartphone stand suitable for everyday use.",
+      "category": "Electronics",
+      "price": 76.59,
+      "stock": 119,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1623482087979-1f54f168d742?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8OXx8ZGVza3RvcHxlbnwwfHx8fHwxNjEyNjAxNzA5&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:23:00Z"
+    },
+    {
+      "id": 204,
+      "sellerId": 10,
+      "name": "USB-C Hub",
+      "description": "High-quality usb-c hub suitable for everyday use.",
+      "category": "Electronics",
+      "price": 33.14,
+      "stock": 71,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1579464679364-b8a1773ff34e?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8Mnx8dGVsZXZpc2lvbnxlbnwwfHx8fHwxNjEyNjA0MDU2&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:24:00Z"
+    },
+    {
+      "id": 205,
+      "sellerId": 10,
+      "name": "Webcam",
+      "description": "High-quality webcam suitable for everyday use.",
+      "category": "Electronics",
+      "price": 25.63,
+      "stock": 84,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1578973352872-bdfb399e56b5?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8Mnx8cGFydF9tYXRlcmlhbHN8ZW58MHx8fHwxNjEyNzI3MDEw&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:25:00Z"
+    },
+    {
+      "id": 206,
+      "sellerId": 11,
+      "name": "Sneakers X1",
+      "description": "Comfortable running sneakers for all-day use.",
+      "category": "Sneakers",
+      "price": 69.99,
+      "stock": 300,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1623460333245-0ea697cf1e28?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8MXx8c25lYWtlcnxlbnwwfHx8fHwxNjEyNzM5NzMw&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:26:00Z"
+    },
+    {
+      "id": 207,
+      "sellerId": 11,
+      "name": "Sporty Sneakers",
+      "description": "Durable sneakers for outdoor sports and exercise.",
+      "category": "Sneakers",
+      "price": 59.99,
+      "stock": 200,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1614236880812-dfffa073c1d3?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8Mnx8Ym9vY3xlbnwwfHx8fHwxNjEyNjkwMTYw&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:27:00Z"
+    },
+    {
+      "id": 208,
+      "sellerId": 11,
+      "name": "Running Sneakers",
+      "description": "Lightweight sneakers for intense running sessions.",
+      "category": "Sneakers",
+      "price": 89.99,
+      "stock": 180,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1577839893518-d3a2ad385982?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8NXx8c25lYWtlfGVufDB8fHx8fHwxNjEyNjI3MzEx&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:28:00Z"
+    },
+    {
+      "id": 209,
+      "sellerId": 11,
+      "name": "Casual Sneakers",
+      "description": "Casual sneakers for everyday wear and comfort.",
+      "category": "Sneakers",
+      "price": 49.99,
+      "stock": 150,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1623023807037-b07b1b208c29?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8Mnx8YWRpZHNfY3N1bW18ZW58MHx8fHwxNjEyNjEzMjM2&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:29:00Z"
+    },
+    {
+      "id": 210,
+      "sellerId": 11,
+      "name": "Outdoor Sneakers",
+      "description": "Rugged sneakers for all-terrain hiking and exploration.",
+      "category": "Sneakers",
+      "price": 79.99,
+      "stock": 120,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1593692269784-bb1f95787b26?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjUyOXwwfDF8c2VhY2h8NXx8c25lYWtlfGVufDB8fHx8fHwxNjEyNzQwNjU5&ixlib=rb-1.2.1&q=80&w=1080",
+      "createdAt": "2025-05-03T15:30:00Z"
     }
   ],
   "orders": [
     {
       "id": "501",
-      "customerId": "2",
+      "customerId": 2,
       "products": [
         {
           "productId": "101",
@@ -85,7 +205,7 @@
   ],
   "reviews": [
     {
-      "id": 901,
+      "id": "901",
       "productId": 101,
       "userId": 2,
       "rating": 3,

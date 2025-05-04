@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      type="module"
+      src="../../assets/js/dashboard/admin-product-manage.js"
+    ></script>
+    <style>
+      table {
+        border: 2px solid black;
+        border-collapse: collapse;
+      }
+      th {
+        border: 2px solid black;
+        border-collapse: collapse;
+        text-align: center;
+        padding: 5px 10px;
+      }
+      td {
+        border: 2px solid black;
+        border-collapse: collapse;
+        text-align: center;
+        padding: 5px 10px;
+      }
+      .del-btn {
+        border: 0;
+        background-color: none;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+
+    <dialog id="edit-dialog">
+      <form method="dialog" id="edit-form">
+        <h3>Edit Product</h3>
+        <input type="hidden" id="edit-id" />
+        <label>Name: <input type="text" id="edit-name" /></label><br />
+        <label>Description: <input type="text" id="edit-description" /></label
+        ><br />
+        <label>Category: <input type="text" id="edit-cat" /></label><br />
+        <label>Price: <input type="text" id="edit-price" /></label><br />
+        <label>Stock: <input type="number" id="edit-stock" /></label><br />
+        <label>Image: <input type="text" id="edit-Image" /></label><br />
+        <button type="submit">Save</button>
+        <button type="button" id="cancel-btn">Cancel</button>
+      </form>
+    </dialog>
+  </body>
+</html>

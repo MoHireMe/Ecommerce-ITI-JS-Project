@@ -201,37 +201,37 @@ nav.main-nav {
 
 /* ============ Fixed Contact Us Section ============ */
 
-/* Social Media Icons Styling */
+
 .supporticons {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin-top: 2rem; /* Adds space above the icons */
+  margin-top: 2rem; 
 }
 
 .social-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px; /* Circle diameter */
-  height: 50px; /* Circle diameter */
-  background-color: #333; /* Dark gray circle background */
-  border-radius: 50%; /* Circle shape */
+  width: 50px; 
+  height: 50px; 
+  background-color: #333; 
+  border-radius: 50%; 
   font-size: 1.5rem;
-  color: #fff; /* White icon color */
-  text-decoration: none; /* Remove underline from icons */
+  color: #fff; 
+  text-decoration: none; 
   transition: background-color 0.3s, transform 0.3s;
   text-align: center;
 }
 
 .social-icon:hover {
-  background-color: orangered; /* Blue background on hover */
-  color: white; /* Icon color changes on hover */
-  transform: scale(1.1); /* Grow effect */
+  background-color: orangered; 
+  color: white; 
+  transform: scale(1.1); 
 }
 
 .social-icon i {
-  pointer-events: none; /* Prevents icon click event from interfering */
+  pointer-events: none;
 }
 
 /* Contact Us Section Styles */
@@ -325,16 +325,16 @@ button:hover {
   }
 
   .address, .customersupport {
-    text-align: center; /* Center align the text */
-    margin-bottom: 1.5rem; /* Space between address and support */
+    text-align: center; 
+    margin-bottom: 1.5rem; 
   }
 
   .addresslabel, .customerlabel {
     display: block;
-    text-align: center; /* Ensure labels are centered */
+    text-align: center; 
     font-weight: bold;
     color: #333;
-    margin-bottom: 0.5rem; /* Add some space between label and content */
+    margin-bottom: 0.5rem; 
   }
 
   .inputs-row {
@@ -350,12 +350,12 @@ button:hover {
     margin-bottom: 2rem;
   }
 
-  /* Adjust social icons layout */
+ 
   .supporticons {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
-    margin-top: 1rem; /* Smaller gap between icons and form */
+    margin-top: 1rem; 
   }
 
   .social-icon {
@@ -555,5 +555,62 @@ button:hover {
   .messageinput {
     width: 100%;
     padding: 0 1rem;
+  }
+}
+
+.info-section {
+  background-color: #1e1e2f; /* deep navy blue */
+  color: #fff;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.info-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.info-column {
+  flex: 1;
+  min-width: 220px;
+}
+
+.info-column h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #555;
+  padding-bottom: 5px;
+}
+
+.info-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.info-column ul li {
+  margin-bottom: 10px;
+}
+
+.info-column ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.info-column ul li a:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .info-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .info-column {
+    margin-bottom: 30px;
   }
 }

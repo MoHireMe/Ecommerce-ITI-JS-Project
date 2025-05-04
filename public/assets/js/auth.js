@@ -16,7 +16,7 @@ export async function loginUser(email, password, rememberMe = false) {
   const user = users.find((u) => u.password === password);
 
   if (!user) throw new Error("Invalid Email or Password");
-  if (!user.isActive) throw new Error("Account is inactive");
+  if (!user.isActive) throw new Error("Account is Suspended");
 
   const storage = rememberMe ? localStorage : sessionStorage;
   storage.setItem("currentUser", JSON.stringify(user));
@@ -41,7 +41,10 @@ export function getCurrentUser() {
 }
 
 export function isLoggedIn() {
-  return !!sessionStorage.getItem("currentUser");
+  return (
+    !!sessionStorage.getItem("currentUser") ||
+    !!localStorage.getItem("currentUser")
+  );
 }
 
 export async function updateUserProfile(userId, newData) {

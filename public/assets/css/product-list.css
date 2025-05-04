@@ -1,0 +1,9 @@
+@import url(./product-card.css);
+
+body {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  height: 100vh;
+}

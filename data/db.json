@@ -35,7 +35,7 @@
       "name": "Mohammad",
       "email": "mohammadashraf5000@gmail.com",
       "password": "aksdlaskjh4",
-      "role": "seller",
+      "role": "customer",
       "address": "hehe st , meheheh ave ,5th hehe district",
       "phone": "01021310778",
       "isActive": true
@@ -51,7 +51,7 @@
       "price": 25.99,
       "stock": 100,
       "approved": true,
-      "image": "mouse.jpg",
+      "image": "https://m.media-amazon.com/images/I/61U4Qj2jqmL._AC_SL1500_.jpg",
       "createdAt": "2025-04-28T10:00:00Z"
     },
     {
@@ -62,7 +62,7 @@
       "category": "Electronics",
       "price": 45,
       "stock": 50,
-      "approved": false,
+      "approved": true,
       "image": "keyboard.jpg",
       "createdAt": "2025-04-28T11:00:00Z"
     }
@@ -88,7 +88,23 @@
       "id": 901,
       "productId": 101,
       "userId": 2,
+      "rating": 3,
+      "comment": "Very smooth and responsive!",
+      "createdAt": "2025-04-29T14:20:00Z"
+    },
+    {
+      "id": 902,
+      "productId": 101,
+      "userId": 2,
       "rating": 5,
+      "comment": "Very smooth and responsive!",
+      "createdAt": "2025-04-29T14:20:00Z"
+    },
+    {
+      "id": 903,
+      "productId": 101,
+      "userId": "8b6b",
+      "rating": 4,
       "comment": "Very smooth and responsive!",
       "createdAt": "2025-04-29T14:20:00Z"
     }

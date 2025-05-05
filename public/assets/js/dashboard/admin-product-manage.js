@@ -87,9 +87,14 @@ rows.forEach((row) => {
     e.stopPropagation();
 
     if (e.target.classList.contains("del-btn")) {
-      await deleteProductById(row.getAttribute("data-id"));
-      row.remove();
-      alert("Item Deleted");
+      const confirmMsg = confirm("Are you sure you want to delete this item");
+      if (confirmMsg) {
+        await deleteProductById(row.getAttribute("data-id"));
+        row.remove();
+        alert("Item Deleted");
+      } else {
+        alert("Item not Deleted");
+      }
     }
 
     if (e.target.classList.contains("edit-btn")) {
@@ -106,10 +111,11 @@ rows.forEach((row) => {
     }
 
     if (e.target.classList.contains("toggle-approval")) {
-      const currentApproval = Boolean(row.querySelectorAll("td")[7].innerText);
+      const currentApproval = row.querySelectorAll("td")[7].innerText;
+
       const obj = {
         id: row.getAttribute("data-id"),
-        approved: !currentApproval,
+        approved: currentApproval === "true" ? false : true,
       };
 
       await updateProductById(obj);

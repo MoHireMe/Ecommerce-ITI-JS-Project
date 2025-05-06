@@ -13,6 +13,7 @@ try {
 
 products.forEach(({ id, name, price, image, category }) => {
   const card = getProductCard(image, name, 5, price, category, id);
+
   productList.append(card);
 });
 

@@ -41,6 +41,15 @@ export async function getCustomerNameById(id) {
   return data[0].name;
 }
 
+export async function getProductNameById(id) {
+  if (!id) throw Error("Invalid Product ID");
+  const res = await fetch(`/products/${id}`);
+  const data = await res.json();
+  if (!res.ok) throw Error("Product Not found");
+  if (!res) throw Error("Unexpected Error");
+  return data.name;
+}
+
 export async function getAllReviewsByProductId(id) {
   if (!id) throw Error("Invalid Product ID");
   const res = await fetch(`/reviews?productId=${id}`);
@@ -50,15 +59,46 @@ export async function getAllReviewsByProductId(id) {
   return data;
 }
 
+export async function getAllOrders() {
+  const res = await fetch(`/orders`);
+  const data = await res.json();
+  if (!res.ok) throw Error("Orders Not found");
+  if (!res) throw Error("Unexpected Error");
+  return data;
+}
+
+export async function getOrderProductsById(id) {
+  const res = await fetch(`/orders/${id}`);
+  const data = await res.json();
+  if (!res.ok) throw Error("Orders Not found");
+  if (!res) throw Error("Unexpected Error");
+  return data.products;
+}
+
 export async function deleteProductById(id) {
   if (!id) throw Error("Invalid Product ID");
   await fetch(`/products/${id}`, {
     method: "DELETE",
   });
 }
+export async function deleteOrderById(id) {
+  if (!id) throw Error("Invalid Product ID");
+  await fetch(`/orders/${id}`, {
+    method: "DELETE",
+  });
+}
 
 export async function updateProductById(updatedItem) {
   const res = await fetch(`http://localhost:3000/products/${updatedItem.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedItem),
+  });
+  if (!res.ok) throw new Error("Update failed");
+}
+
+export async function updateOrderById(updatedItem) {
+  const res = await fetch(`http://localhost:3000/orders/${updatedItem.id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updatedItem),

@@ -1,6 +1,7 @@
 const getProductCard = (imgSrc, title, stars, price, cat, pid) => {
   const card = document.createElement("div");
   card.classList.add("product-card-container");
+  card.setAttribute("data-id", pid);
   card.innerHTML = `
     <img src="${imgSrc}" alt="${title.split(" ").join("-").toLowerCase()}" />
     <h3 class="title">${title}</h3>

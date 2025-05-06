@@ -1,9 +1,13 @@
 @import url(./product-card.css);
 
 body {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
   height: 100vh;
+}
+.productList-container {
+  width: 80vw;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  margin: 20px auto;
 }

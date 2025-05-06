@@ -5,7 +5,7 @@ import {
 } from "../api.js";
 
 const theadTag = document.querySelector("thead");
-const tbodyTag = document.querySelector("thead");
+const tbodyTag = document.querySelector("tbody");
 const dialog = document.querySelector("#edit-dialog");
 const form = document.querySelector("#edit-form");
 const cancelBtn = document.querySelector("#cancel-btn");
@@ -37,10 +37,6 @@ const displayTableBody = (prod) => {
 
     for (const data in item) {
       const td = document.createElement("td");
-      if (item == "approved") {
-        const btn = document.createElement("button");
-        btn.classList.add("toggle-approve");
-      }
       td.innerText = item[data];
       tr.append(td);
     }

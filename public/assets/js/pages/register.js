@@ -101,7 +101,7 @@ form.addEventListener("submit", async (e) => {
       await registerUser(user);
       window.location.href = "./login";
     } catch (err) {
-      error[1].innerText = err.message; // Show at email error position
+      error[4].innerText = err.message; // Show at email error position
       
       // Re-enable form on error
       submitBtn.disabled = false;

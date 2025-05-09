@@ -83,6 +83,7 @@ export async function getOrderProductsById(id) {
   return data.products;
 }
 
+
 export async function deleteProductById(id) {
   if (!id) throw Error("Invalid Product ID");
   await fetch(`/products/${id}`, {

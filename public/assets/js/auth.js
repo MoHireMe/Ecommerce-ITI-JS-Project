@@ -53,8 +53,16 @@ export async function updateUserProfile(userId, newData) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newData),
   });
+  const data = await res.json();
+
   if (!res.ok) throw new Error("Failed to update profile");
-  return await res.json();
+
+  if (localStorage.getItem("currentUser")) {
+    localStorage.setItem("currentUser", JSON.stringify(data));
+  } else if (sessionStorage.getItem("currentUser")) {
+    sessionStorage.setItem("currentUser", JSON.stringify(data));
+  }
+
 }
 
 export async function deactivateAccount(userId) {

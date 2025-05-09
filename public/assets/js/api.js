@@ -83,6 +83,13 @@ export async function getOrderProductsById(id) {
   return data.products;
 }
 
+export async function getOrdersByCustomerId(id) {
+  const res = await fetch(`/orders?customerId=${id}`);
+  const data = await res.json();
+  if (!res.ok) throw Error("Orders Not found");
+  if (!res) throw Error("Unexpected Error");
+  return data;
+}
 
 export async function deleteProductById(id) {
   if (!id) throw Error("Invalid Product ID");
@@ -122,4 +129,14 @@ export async function addNewProduct(item) {
     body: JSON.stringify(item),
   });
   if (!res.ok) throw new Error("Addtion failed");
+}
+
+export async function addReview(review) {
+  const res = await fetch(`/reviews`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
+  });
+  if (!res.ok) throw new Error("Failed to add review");
+  return await res.json();
 }

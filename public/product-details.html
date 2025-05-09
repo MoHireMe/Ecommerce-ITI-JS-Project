@@ -3,36 +3,157 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>Product Details</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/global.css" />
     <link rel="stylesheet" href="./assets/css/product-details.css" />
     <script
       type="module"
       defer
       src="./assets/js/pages/product-details.js"
     ></script>
+    <script
+      type="module"
+      defer
+      src="./assets/js/pages/product-details-ui.js"
+    ></script>
   </head>
   <body>
-    <div class="main-container">
-      <div class="product-container">
-        <div class="img-container">
-          <img src="" alt="" />
+    <div class="mobile-menu-button"><i class="fas fa-bars"></i></div>
+    <div class="sidebar">
+      <div class="close-btn"><i class="fas fa-times"></i></div>
+      <ul class="sidebar-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./product-list.html">Shop</a></li>
+        <li><a href="#">Deals</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <nav class="main-nav">
+        <a href="./index.html" class="logo">
+          <img src="./assets/images/logo.png" alt="Buy Hive Logo" />
+        </a>
+        <ul class="nav-links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./product-list.html">Shop</a></li>
+          <li><a href="#">Deals</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav-search">
+          <input type="text" placeholder="Search for products..." />
+          <button><i class="fas fa-search"></i></button>
         </div>
-        <div class="product-details-container">
-          <h3 class="title"></h3>
-          <p class="description"></p>
-          <span class="seller"></span>
-          <div class="stars">
-            <span class="star">⭐</span>
-            <span class="total-ratings">Ratings</span>
+        <div class="icons">
+          <i class="fas fa-user"></i>
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+      </nav>
+
+      <!-- Breadcrumbs -->
+      <div class="breadcrumbs">
+        <a href="./index.html">Home</a> / 
+        <a href="./product-list.html">Shop</a> / 
+        <span class="current-page">Product Details</span>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-container">
+        <div class="product-container">
+          <div class="img-container">
+            <img src="" alt="" />
           </div>
-          <span class="cat"></span>
-          <span class="price">EGP </span>
-          <button class="cart-btn">Add To Cart</button>
+          <div class="product-details-container">
+            <h1 class="title"></h1>
+            <div class="product-meta">
+              <div class="stars">
+                <span class="star">⭐</span>
+                <span class="total-ratings">Ratings</span>
+              </div>
+              <span class="cat-badge">Category: <span class="cat"></span></span>
+            </div>
+            <div class="price-container">
+              <span class="price">EGP </span>
+              <span class="availability">In Stock</span>
+            </div>
+            <p class="description"></p>
+            <div class="seller-info">
+              <i class="fas fa-store"></i> Sold by: <span class="seller"></span>
+            </div>
+            <div class="quantity-selector">
+              <label for="quantity">Quantity:</label>
+              <div class="quantity-controls">
+                <button class="quantity-btn minus">-</button>
+                <input type="number" id="quantity" value="1" min="1" max="10">
+                <button class="quantity-btn plus">+</button>
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add To Cart</button>
+              <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="product-tabs">
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="reviews">Reviews</button>
+            <button class="tab-btn" data-tab="details">Details</button>
+            <button class="tab-btn" data-tab="shipping">Shipping</button>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane active" id="reviews">
+              <div class="reviews-container">
+                <h2>Customer Reviews</h2>
+                <!-- Reviews will be loaded here -->
+              </div>
+            </div>
+            <div class="tab-pane" id="details">
+              <h2>Product Details</h2>
+              <p>Additional product specifications and details will appear here.</p>
+            </div>
+            <div class="tab-pane" id="shipping">
+              <h2>Shipping Information</h2>
+              <p>Standard shipping takes 3-5 business days. Express shipping options available at checkout.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="reviews-container">
-        <h2>Reviews</h2>
+      <!-- Footer -->
+      <footer class="main-footer">
+        <div class="footer-content">
+          <p>&copy; 2025 Buy Hive. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <div class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <span class="close-cart"><i class="fas fa-times"></i></span>
+      </div>
+      <div class="cart-items">
+        <p>No items in the cart yet.</p>
       </div>
     </div>
+
+    <script
+      src="https://kit.fontawesome.com/c49ef8856d.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./assets/js/main.js"></script>
   </body>
 </html>

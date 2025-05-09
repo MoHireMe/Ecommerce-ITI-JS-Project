@@ -26,17 +26,57 @@ const displayPasswordErrorMsg = (pass) => {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  
+  // Disable form and show loading (change #1)
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "LOGGING IN...";
+  
   const emailVal = emailInput.value.trim();
   const passVal = passwordInput.value.trim();
-
-  if (validateEmail(emailVal) && validatePassword(passVal)) {
+  
+  // Clear previous errors
+  error[0].innerText = "";
+  error[1].innerText = "";
+  
+  // Improved validation (change #6)
+  let isValid = true;
+  
+  if (!emailVal) {
+    error[0].innerText = "Email is required";
+    isValid = false;
+  } else if (!validateEmail(emailVal)) {
+    error[0].innerText = "Invalid email format";
+    isValid = false;
+  }
+  
+  if (!passVal) {
+    error[1].innerText = "Password is required";
+    isValid = false;
+  } else if (!validatePassword(passVal)) {
+    error[1].innerText = "Invalid password format";
+    isValid = false;
+  }
+  
+  if (isValid) {
     try {
-      console.log();
+      // Get return URL from query parameters (change #7)
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnUrl = urlParams.get('returnUrl') || './index.html';
+      
       await loginUser(emailVal, passVal, checkBoxInput.checked);
-      window.location.href = "./index.html";
+      window.location.href = returnUrl;
     } catch (err) {
       error[1].innerText = err.message;
+      
+      // Re-enable form on error
+      submitBtn.disabled = false;
+      submitBtn.textContent = "LOGIN";
     }
+  } else {
+    // Re-enable form if validation fails
+    submitBtn.disabled = false;
+    submitBtn.textContent = "LOGIN";
   }
 });
 

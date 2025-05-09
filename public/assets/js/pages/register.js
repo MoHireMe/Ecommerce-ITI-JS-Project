@@ -4,6 +4,7 @@ import {
   validatePassword,
   validateName,
   validatePhone,
+  validateAddress,
 } from "../utility/validation.js";
 
 const form = document.querySelector("form");
@@ -14,7 +15,10 @@ const phoneInput = document.querySelector("#phone");
 const addressInput = document.querySelector("#address");
 
 const checkBoxInput = document.querySelector("#seller");
+// Get all error message elements
 const error = document.querySelectorAll(".error-message");
+// Verify we have the correct number of error elements
+console.log("Number of error elements:", error.length);
 
 const displayNameErrorMsg = (fName) => {
   if (!validateName(fName)) {
@@ -41,16 +45,32 @@ const displayPasswordErrorMsg = (pass) => {
   }
 };
 
-const displayPhoneErrorMsg = (phone) => {
-  if (!validatePhone(phone)) {
-    error[3].innerText = "Invalid Phone Number";
+const displayAddressErrorMsg = (address) => {
+  if (!validateAddress(address)) {
+    error[3].innerText = "Please enter a valid address (minimum 5 characters)";
+    return false;
   } else {
     error[3].innerText = "";
+    return true;
+  }
+};
+
+const displayPhoneErrorMsg = (phone) => {
+  if (!validatePhone(phone)) {
+    error[4].innerText = "Invalid Phone Number";
+  } else {
+    error[4].innerText = "";
   }
 };
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  
+  // Disable form and show loading
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "SIGNING UP...";
+  
   const emailVal = emailInput.value.trim().toLowerCase();
   const passVal = passwordInput.value.trim();
   const nameVal = nameInput.value.trim();
@@ -61,7 +81,8 @@ form.addEventListener("submit", async (e) => {
     validateEmail(emailVal) &&
     validatePassword(passVal) &&
     validateName(nameVal) &&
-    validatePhone(phoneVal)
+    validatePhone(phoneVal) &&
+    validateAddress(addressVal)
   ) {
     try {
       if (await userExists(emailVal)) {
@@ -80,7 +101,11 @@ form.addEventListener("submit", async (e) => {
       await registerUser(user);
       window.location.href = "./login";
     } catch (err) {
-      error[3].innerText = err.message;
+      error[1].innerText = err.message; // Show at email error position
+      
+      // Re-enable form on error
+      submitBtn.disabled = false;
+      submitBtn.textContent = "SIGNUP";
     }
   }
 });
@@ -95,6 +120,10 @@ emailInput.addEventListener("keyup", (e) => {
 
 passwordInput.addEventListener("keyup", (e) => {
   displayPasswordErrorMsg(e.target.value.trim());
+});
+
+addressInput.addEventListener("keyup", (e) => {
+  displayAddressErrorMsg(e.target.value.trim());
 });
 
 phoneInput.addEventListener("keyup", (e) => {

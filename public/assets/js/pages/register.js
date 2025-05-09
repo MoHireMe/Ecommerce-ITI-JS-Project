@@ -66,24 +66,73 @@ const displayPhoneErrorMsg = (phone) => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   
-  // Disable form and show loading
-  const submitBtn = form.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.textContent = "SIGNING UP...";
-  
+  // Get all input values
   const emailVal = emailInput.value.trim().toLowerCase();
   const passVal = passwordInput.value.trim();
   const nameVal = nameInput.value.trim();
   const phoneVal = phoneInput.value.trim();
   const addressVal = addressInput.value.trim();
-
+  
+  // Check for empty fields first
+  let hasEmptyFields = false;
+  
+  if (!nameVal) {
+    error[0].innerText = "Name is required";
+    hasEmptyFields = true;
+  }
+  
+  if (!emailVal) {
+    error[1].innerText = "Email is required";
+    hasEmptyFields = true;
+  }
+  
+  if (!passVal) {
+    error[2].innerText = "Password is required";
+    hasEmptyFields = true;
+  }
+  
+  if (!addressVal) {
+    error[3].innerText = "Address is required";
+    hasEmptyFields = true;
+  }
+  
+  if (!phoneVal) {
+    error[4].innerText = "Phone number is required";
+    hasEmptyFields = true;
+  }
+  
+  // If any field is empty, don't proceed with form submission
+  if (hasEmptyFields) {
+    return;
+  }
+  
+  // Validate input formats
+  const isNameValid = validateName(nameVal);
+  const isEmailValid = validateEmail(emailVal);
+  const isPasswordValid = validatePassword(passVal);
+  const isAddressValid = validateAddress(addressVal);
+  const isPhoneValid = validatePhone(phoneVal);
+  
+  // Display validation errors if any
+  displayNameErrorMsg(nameVal);
+  displayEmailErrorMsg(emailVal);
+  displayPasswordErrorMsg(passVal);
+  displayAddressErrorMsg(addressVal);
+  displayPhoneErrorMsg(phoneVal);
+  
+  // Disable form and show loading only if all validations pass
   if (
-    validateEmail(emailVal) &&
-    validatePassword(passVal) &&
-    validateName(nameVal) &&
-    validatePhone(phoneVal) &&
-    validateAddress(addressVal)
+    isNameValid &&
+    isEmailValid &&
+    isPasswordValid &&
+    isAddressValid &&
+    isPhoneValid
   ) {
+    // Disable form and show loading
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "SIGNING UP...";
+    
     try {
       if (await userExists(emailVal)) {
         console.log(userExists(emailVal));
@@ -101,7 +150,7 @@ form.addEventListener("submit", async (e) => {
       await registerUser(user);
       window.location.href = "./login";
     } catch (err) {
-      error[4].innerText = err.message; // Show at email error position
+      error[1].innerText = err.message; // Show at email error position
       
       // Re-enable form on error
       submitBtn.disabled = false;

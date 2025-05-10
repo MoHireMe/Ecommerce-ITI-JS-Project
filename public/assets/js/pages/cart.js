@@ -1,16 +1,19 @@
+/**
+ * Cart functionality for the e-commerce site
+ * Note: Most cart UI functionality is now handled directly in product-card.js
+ * This file maintains the core cart functions for compatibility
+ */
+
+// Generate a unique order ID for checkout
 function getOrCreateOrderId() {
   let orderId = localStorage.getItem('orderId');
   
-  // Check if an orderId already exists in localStorage
   if (!orderId) {
     let newOrderId;
-    
-    // Generate a unique orderId
     do {
       newOrderId = `order-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-    } while (localStorage.getItem(newOrderId));  // Keep generating until unique
+    } while (localStorage.getItem(newOrderId));
     
-    // Set the unique orderId in localStorage
     localStorage.setItem('orderId', newOrderId);
     orderId = newOrderId;
   }
@@ -26,80 +29,35 @@ function updateCartCount() {
   if (el) el.textContent = totalItems;
 }
 
-// 🔥 MAIN FUNCTION TO CALL FROM OUTSIDE (UI -> LocalStorage only)
+// Add product to cart (exported for compatibility with other modules)
 export function addToCart(product) {
   try {
-    console.log("Adding product to cart:", product); // Log to verify the product being added
-
-    addToCartLocalStorage(product); // Add product to localStorage
-    updateCartCount();  // Update cart count in the header UI
-
-    // Open sidebar if it exists
-    const sidebar = document.querySelector(".cart-sidebar");
-    if (sidebar) {
-      sidebar.classList.add("open");
-    }
-
-    // Render the cart sidebar immediately after adding a product
-    renderCartSidebar(); // Immediate render after adding to cart
-
+    console.log("Legacy addToCart called - cart UI is now handled in product-card.js");
+    
+    // Add to localStorage
+    addToCartLocalStorage(product);
+    
+    // Update cart count
+    updateCartCount();
+    
+    // Note: We no longer need to update the sidebar here as it's handled in product-card.js
   } catch (err) {
     console.error("Error in addToCart:", err);
-    alert("Error adding product to cart.");
   }
 }
 
-// 📦 Add product to localStorage cart
+// Add product to localStorage cart
 export function addToCartLocalStorage(product) {
   let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
-  console.log("Current cart items:", cartItems); // Log the cart contents
-
   const existing = cartItems.find((item) => item.id === product.id);
   if (existing) {
-    existing.quantity += 1; // Increment quantity if product already exists in cart
+    existing.quantity += 1; // Increment quantity if product already exists
   } else {
-    cartItems.push({ ...product, quantity: 1 }); // Add new product to cart
+    cartItems.push({ ...product, quantity: 1 }); // Add new product
   }
 
-  localStorage.setItem("cart", JSON.stringify(cartItems)); // Save updated cart to localStorage
-  console.log("Updated cart items:", cartItems); // Log the updated cart
-}
-
-// ✅ Render the entire cart sidebar
-function renderCartSidebar() {
-  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-  const container = document.querySelector(".cart-items");
-  const totalEl = document.getElementById("cart-total");
-  const emptyMsg = document.querySelector(".empty-cart-msg");
-
-  if (!container || !totalEl || !emptyMsg) return; // Safeguard if sidebar not present
-
-  container.innerHTML = ""; // Clear old content
-
-  if (cartItems.length === 0) {
-    emptyMsg.style.display = "block";
-    totalEl.textContent = "0.00"; // Show 0.00 if cart is empty
-    return;
-  }
-
-  emptyMsg.style.display = "none"; // Hide empty cart message when cart has items
-
-  let total = 0;
-  cartItems.forEach((item) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.classList.add("cart-item");
-    itemDiv.setAttribute("data-id", item.id);
-    itemDiv.innerHTML = `
-      <div><strong>${item.name}</strong> <span class="item-quantity">x${item.quantity}</span></div>
-      <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
-    `;
-    container.appendChild(itemDiv);
-    total += item.price * item.quantity;
-  });
-
-  totalEl.textContent = total.toFixed(2); // Display total price
-  localStorage.setItem("cartTotal", total.toFixed(2)); // 🔥 Save total to localStorage too
+  localStorage.setItem("cart", JSON.stringify(cartItems));
 }
 
 // ✅ Checkout Button Logic

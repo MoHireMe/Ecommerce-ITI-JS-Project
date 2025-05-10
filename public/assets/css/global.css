@@ -331,33 +331,37 @@ button:hover {
   justify-content: center;
 }
 
-/* =================== Sidebar Menus =================== */
+/* =================== Mobile Sidebar Menus =================== */
 .mobile-menu-button {
   display: none;
-  position: fixed;
-  top: 15px;
-  left: 15px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
   background-color: #00c875;
   color: white;
   padding: 10px;
   border-radius: 5px;
-  z-index: 799; /* LOWER than the sidebar's z-index (800) */
+  z-index: 1010; /* Higher than the main nav */
   cursor: pointer;
-  transition: z-index 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-button:hover {
+  background-color: #00b167;
 }
 
 .mobile-sidebar {
   position: fixed;
   top: 0;
-  left: -250px;
-  width: 250px;
+  left: -280px;
+  width: 280px;
   height: 100%;
   background: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 800; /* sidebar is on top */
+  z-index: 1020; /* Higher than the menu button */
   transition: left 0.3s ease;
-  padding: 2rem 1rem;
-  overflow: hidden;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
 }
 
 .mobile-sidebar.active {
@@ -367,21 +371,34 @@ button:hover {
 .mobile-sidebar .close-btn {
   text-align: right;
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.mobile-sidebar .close-btn:hover {
+  color: #00c875;
 }
 
 .mobile-sidebar .sidebar-links {
   list-style: none;
   padding: 0;
+  margin-top: 1rem;
 }
 
 body.sidebar-open .mobile-menu-button {
-  z-index: 700;
+  visibility: hidden;
 }
 
 .mobile-sidebar .sidebar-links li {
-  margin: 1rem 0;
+  margin: 1.2rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.8rem;
+}
+
+.mobile-sidebar .sidebar-links li:last-child {
+  border-bottom: none;
 }
 
 .mobile-sidebar .sidebar-links a {
@@ -389,11 +406,34 @@ body.sidebar-open .mobile-menu-button {
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.mobile-sidebar .sidebar-links a:hover {
+  color: #00c875;
 }
 
 @media (max-width: 768px) {
   .mobile-menu-button {
-    display: block!important;
+    display: block !important;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  nav.main-nav {
+    padding-left: 60px; /* Make room for the menu button */
+  }
+  
+  .logo img {
+    height: 90px; /* Slightly smaller logo on mobile */
+  }
+  
+  .nav-search {
+    max-width: 200px;
+    margin: 0 1rem;
   }
 }
 
@@ -431,6 +471,112 @@ body.sidebar-open .mobile-menu-button {
   padding: 20px;
   overflow-y: auto;
   flex-grow: 1;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.cart-item:hover {
+  background-color: #f2f2f2;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12);
+}
+
+.cart-item strong {
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.cart-item .quantity-controls {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.cart-item .quantity-btn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9e9e9;
+  color: #666;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.cart-item .quantity-btn:hover {
+  background-color: #00c875;
+  color: white;
+}
+
+.cart-item .quantity-btn.minus:hover {
+  background-color: #ff6b6b;
+}
+
+.cart-item .item-quantity {
+  color: #666;
+  font-size: 12px;
+  background-color: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 0 5px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.cart-item .item-total {
+  color: #444;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.cart-item .delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #ddd;
+  color: #666;
+  font-size: 10px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.cart-item .delete-btn:hover {
+  background-color: crimson;
+  color: white;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.empty-cart-msg {
+  color: #888;
+  text-align: center;
+  padding: 20px 0;
+  font-style: italic;
 }
 
 .cart-footer {

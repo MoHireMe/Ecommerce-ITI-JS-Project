@@ -1,5 +1,6 @@
 import { getOrdersByCustomerId, getOrderProductsById, getProductNameById, addReview } from '../../js/api.js';
 import { dateFormatFromISO, dateFormatToISO, getDateObjectFromISO } from '../../js/utility/format.js';
+import { getCurrentUser } from '../auth.js';
 document.addEventListener('DOMContentLoaded', async () => {
   // Get DOM elements
   const productDialog = document.getElementById('product-dialog');
@@ -10,14 +11,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const ordersContentElement = document.getElementById('orders-content');
 
   try {
-    // Get the current user from localStorage
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    // Get the current user from both localStorage and sessionStorage
+    const currentUser = getCurrentUser();
     
-    if (!currentUser || !currentUser.id) {
-      // Redirect to login if user is not logged in
-      window.location.href = '../auth/login.html';
-      return;
-    }
+    // Authentication is now handled by profile-auth.js
 
     // Fetch all orders
     const allOrders = await getOrdersByCustomerId(currentUser.id);

@@ -1,8 +1,7 @@
 import { getCurrentUser , updateUserProfile} from "../auth.js";
 import { validateEmail, validatePassword, validateName, validatePhone } from "../utility/validation.js";
-// Example: get user ID (replace this with your actual logic)
-const userId = getCurrentUser().id; // Or however you store the logged-in user's ID
 
+// Authentication is now handled by profile-auth.js
 const form = document.getElementById("profileForm");
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
@@ -11,9 +10,11 @@ const addressInput = document.getElementById("address");
 const passwordInput = document.getElementById("password");
 const errorMsg = document.getElementById("error");
 
-
-// Populate form fields with current user data
+// Get current user and populate form fields
 const currentUser = getCurrentUser();
+const userId = currentUser ? currentUser.id : null;
+
+// Populate form fields with current user data if user exists
 if (currentUser) {
   nameInput.value = currentUser.name || "";
   emailInput.value = currentUser.email || "";

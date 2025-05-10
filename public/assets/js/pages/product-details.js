@@ -4,7 +4,157 @@ import {
   getAllReviewsByProductId,
   getCustomerNameById,
 } from "../api.js";
+// Import only what we need
 import { dateFormatFromISO } from "../utility/format.js";
+
+// Standalone function to update the cart UI
+function updateCartUI() {
+  console.log('Directly updating cart UI from product-details.js');
+  
+  // Get cart items from localStorage
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // Get cart sidebar elements
+  const sidebar = document.querySelector('.cart-sidebar');
+  if (!sidebar) {
+    console.error('Cart sidebar not found');
+    return;
+  }
+  
+  // Get cart elements
+  const container = sidebar.querySelector('.cart-items');
+  const totalEl = sidebar.querySelector('#cart-total');
+  
+  if (!container || !totalEl) {
+    console.error('Essential cart elements not found');
+    return;
+  }
+  
+  // Clear existing cart items
+  container.innerHTML = '';
+  
+  // Check if cart is empty
+  if (cartItems.length === 0) {
+    const emptyMsg = document.createElement('p');
+    emptyMsg.className = 'empty-cart-msg';
+    emptyMsg.textContent = 'No items in the cart yet.';
+    container.appendChild(emptyMsg);
+    totalEl.textContent = '0.00';
+    return;
+  }
+  
+  // Add items to cart
+  let total = 0;
+  
+  cartItems.forEach(item => {
+    // Create cart item element
+    const itemEl = document.createElement('div');
+    itemEl.className = 'cart-item';
+    itemEl.setAttribute('data-id', item.id);
+    
+    // Set item content
+    itemEl.innerHTML = `
+      <div>
+        <strong>${item.name}</strong>
+        <div class="quantity-controls">
+          <span class="quantity-btn minus" data-id="${item.id}">-</span>
+          <span class="item-quantity">${item.quantity}</span>
+          <span class="quantity-btn plus" data-id="${item.id}">+</span>
+        </div>
+      </div>
+      <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+      <span class="delete-btn" data-id="${item.id}"><i class="fas fa-times"></i></span>
+    `;
+    
+    // Add to container
+    container.appendChild(itemEl);
+    
+    // Update total
+    total += item.price * item.quantity;
+  });
+  
+  // Update total price
+  totalEl.textContent = total.toFixed(2);
+  
+  // Add event listeners to buttons
+  addCartItemEventListeners();
+}
+
+// Function to add event listeners to cart items
+function addCartItemEventListeners() {
+  const cartItems = document.querySelectorAll('.cart-item');
+  
+  cartItems.forEach(item => {
+    const itemId = item.getAttribute('data-id');
+    
+    // Delete button
+    const deleteBtn = item.querySelector('.delete-btn');
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', () => {
+        removeItemFromCart(itemId);
+      });
+    }
+    
+    // Minus button
+    const minusBtn = item.querySelector('.quantity-btn.minus');
+    if (minusBtn) {
+      minusBtn.addEventListener('click', () => {
+        updateItemQuantity(itemId, -1);
+      });
+    }
+    
+    // Plus button
+    const plusBtn = item.querySelector('.quantity-btn.plus');
+    if (plusBtn) {
+      plusBtn.addEventListener('click', () => {
+        updateItemQuantity(itemId, 1);
+      });
+    }
+  });
+}
+
+// Function to remove item from cart
+function removeItemFromCart(itemId) {
+  console.log('Removing item from cart:', itemId);
+  
+  // Get cart items
+  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // Remove item
+  cartItems = cartItems.filter(item => item.id !== itemId);
+  
+  // Update localStorage
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update UI
+  updateCartUI();
+}
+
+// Function to update item quantity
+function updateItemQuantity(itemId, change) {
+  console.log('Updating item quantity:', itemId, change);
+  
+  // Get cart items
+  let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // Find item
+  const item = cartItems.find(item => item.id === itemId);
+  if (!item) return;
+  
+  // Update quantity
+  item.quantity += change;
+  
+  // Remove item if quantity is 0 or less
+  if (item.quantity <= 0) {
+    return removeItemFromCart(itemId);
+  }
+  
+  // Update localStorage
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+  
+  // Update UI
+  updateCartUI();
+}
 
 const imgTag = document.querySelector(".img-container img");
 const titleTag = document.querySelector(".title");
@@ -84,10 +234,69 @@ const displayProductData = async ({
   const cartBtn = document.querySelector('.cart-btn');
   
   if (cartBtn && quantityInput) {
-    cartBtn.addEventListener('click', () => {
-      const quantity = parseInt(quantityInput.value);
-      console.log(`Adding ${quantity} of product ${id} to cart`);
-      // Here you would add your actual cart functionality
+    cartBtn.addEventListener('click', async () => {
+      try {
+        // Disable button to prevent multiple clicks
+        cartBtn.disabled = true;
+        cartBtn.textContent = "Adding to Cart...";
+        
+        // Get quantity from input
+        const quantity = parseInt(quantityInput.value) || 1;
+        
+        // Create product object with the selected quantity
+        const productToAdd = {
+          id: id,
+          name: name,
+          price: parseFloat(price),
+          quantity: quantity
+        };
+        
+        console.log('Adding product to cart with quantity:', quantity);
+        
+        // DIRECT CART MANIPULATION
+        // Get current cart
+        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+        const existing = cartItems.find(item => item.id === id);
+        
+        if (existing) {
+          existing.quantity += quantity; // Add the selected quantity
+          console.log('Updated existing item quantity to:', existing.quantity);
+        } else {
+          cartItems.push(productToAdd); // Add new product with quantity
+          console.log('Added new item to cart');
+        }
+        
+        // Save to localStorage
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+        console.log('Cart saved to localStorage:', cartItems);
+        
+        // Update button text for feedback
+        cartBtn.textContent = "Added to Cart!";
+        
+        // Open the cart sidebar
+        const sidebar = document.querySelector(".cart-sidebar");
+        if (sidebar) {
+          sidebar.classList.add("open");
+          
+          // Update cart UI using our standalone function
+          updateCartUI();
+        }
+        
+        // Reset button after delay
+        setTimeout(() => {
+          cartBtn.disabled = false;
+          cartBtn.textContent = "Add to Cart";
+        }, 1500);
+        
+      } catch (err) {
+        console.error("Error adding to cart:", err);
+        cartBtn.textContent = "Error!";
+        
+        setTimeout(() => {
+          cartBtn.disabled = false;
+          cartBtn.textContent = "Add to Cart";
+        }, 1500);
+      }
     });
   }
 };
@@ -234,3 +443,68 @@ async function initProductDetails() {
 
 // Initialize the product details page
 initProductDetails();
+
+// Initialize cart count and sidebar when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  // Update cart count
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const countEl = document.querySelector("#cart-count");
+  if (countEl) countEl.textContent = totalItems;
+  
+  // Initialize quantity selector buttons
+  const quantityInput = document.getElementById('quantity');
+  const minusBtn = document.querySelector('.quantity-controls .minus');
+  const plusBtn = document.querySelector('.quantity-controls .plus');
+  
+  if (minusBtn && plusBtn && quantityInput) {
+    minusBtn.addEventListener('click', () => {
+      const currentValue = parseInt(quantityInput.value) || 1;
+      if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+      }
+    });
+    
+    plusBtn.addEventListener('click', () => {
+      const currentValue = parseInt(quantityInput.value) || 1;
+      quantityInput.value = currentValue + 1;
+    });
+  }
+  
+  // Add click event to cart icon to open sidebar
+  const cartIcon = document.querySelector('.fa-shopping-cart');
+  if (cartIcon) {
+    cartIcon.addEventListener('click', () => {
+      const sidebar = document.querySelector('.cart-sidebar');
+      if (sidebar) {
+        sidebar.classList.add('open');
+        renderCartSidebar();
+      }
+    });
+  }
+  
+  // Add click event to close cart button
+  const closeCart = document.querySelector('.close-cart');
+  if (closeCart) {
+    closeCart.addEventListener('click', () => {
+      const sidebar = document.querySelector('.cart-sidebar');
+      if (sidebar) {
+        sidebar.classList.remove('open');
+      }
+    });
+  }
+  
+  // Add click event to checkout button
+  const checkoutBtn = document.querySelector('.checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      if (cartItems.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+      
+      // Navigate to checkout page
+      window.location.href = '/checkout.html';
+    });
+  }
+});

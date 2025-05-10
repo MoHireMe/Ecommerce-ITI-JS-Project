@@ -10,6 +10,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Admin authentication check - runs immediately when loaded -->
+    <script type="module">
+      import hasAccess from '../../assets/js/admin-auth.js';
+      // Script will redirect if user doesn't have access
+      console.log('Admin access check completed:', hasAccess);
+    </script>
     <script
       type="module"
       src="../../assets/js/dashboard/admin-order-manage.js"

@@ -31,7 +31,8 @@ export async function userExists(email) {
 }
 
 export function logoutUser() {
-  sessionStorage.removeItem("currentUser");
+  sessionStorage.removeItem("currentUser")||localStorage.removeItem("currentUser");
+  window.location.href = "/index.html";
 }
 
 export function getCurrentUser() {

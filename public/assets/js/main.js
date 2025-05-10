@@ -145,29 +145,175 @@ function renderCartContents() {
   totalEl.textContent = total.toFixed(2);
 }
 
-// Open cart sidebar and render contents
-cartIcon.addEventListener("click", () => {
-  cartSidebar.classList.add("open");
-  renderCartContents(); // Render cart contents when sidebar is opened
+// Open cart sidebar and render contents with authentication check
+cartIcon.addEventListener("click", async () => {
+  try {
+    // Import auth functions
+    const authModule = await import('./auth.js');
+    const { isLoggedIn, checkUserRole } = authModule;
+    
+    // Check if user is logged in
+    if (!isLoggedIn()) {
+      alert('You need to be logged in to view your cart.');
+      window.location.href = './login.html';
+      return;
+    }
+    
+    // Check if user is a customer
+    if (!checkUserRole('customer')) {
+      alert('Only customers can access the shopping cart.');
+      window.location.href = './login.html';
+      return;
+    }
+    
+    // If authenticated as customer, open cart
+    cartSidebar.classList.add("open");
+    renderCartContents(); // Render cart contents when sidebar is opened
+  } catch (error) {
+    console.error('Error checking authentication:', error);
+  }
 });
 
 closeCart.addEventListener("click", () => {
   cartSidebar.classList.remove("open");
 });
 
+// Add checkout button functionality with authentication check
+document.addEventListener('DOMContentLoaded', () => {
+  const checkoutBtn = document.querySelector('.checkout-btn');
+  
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', async () => {
+      try {
+        // Import auth functions
+        const authModule = await import('./auth.js');
+        const { isLoggedIn, checkUserRole } = authModule;
+        
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+          alert('You need to be logged in to checkout.');
+          window.location.href = './login.html';
+          return;
+        }
+        
+        // Check if user is a customer
+        if (!checkUserRole('customer')) {
+          alert('Only customers can checkout.');
+          window.location.href = './login.html';
+          return;
+        }
+        
+        // Get cart items
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if cart is empty
+        if (cartItems.length === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+        
+        // Proceed to checkout
+        window.location.href = './checkout.html';
+      } catch (error) {
+        console.error('Error during checkout:', error);
+      }
+    });
+  }
+});
+
+// USER DROPDOWN MENU
+document.addEventListener('DOMContentLoaded', async () => {
+  // User dropdown toggle
+  const userIcon = document.getElementById('user-icon');
+  const customerDropdown = document.getElementById('customer-dropdown');
+  const adminSellerDropdown = document.getElementById('admin-seller-dropdown');
+  const logoutBtnCustomer = document.getElementById('logout-btn-customer');
+  const logoutBtnAdminSeller = document.getElementById('logout-btn-admin-seller');
+  const dashboardLink = document.getElementById('dashboard-link');
+  
+  // Import auth functions
+  const authModule = await import('./auth.js');
+  const { isLoggedIn, checkUserRole } = authModule;
+  
+  if (userIcon) {
+    // Toggle appropriate dropdown when user icon is clicked
+    userIcon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      
+      // Determine which dropdown to show based on user role
+      if (isLoggedIn()) {
+        if (checkUserRole('customer')) {
+          if (customerDropdown) customerDropdown.classList.toggle('active');
+        } else if (checkUserRole('seller') || checkUserRole('admin')) {
+          if (adminSellerDropdown) adminSellerDropdown.classList.toggle('active');
+        }
+      }
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!userIcon.contains(e.target)) {
+        if (customerDropdown && !customerDropdown.contains(e.target)) {
+          customerDropdown.classList.remove('active');
+        }
+        if (adminSellerDropdown && !adminSellerDropdown.contains(e.target)) {
+          adminSellerDropdown.classList.remove('active');
+        }
+      }
+    });
+    
+    // Handle customer logout button click
+    if (logoutBtnCustomer) {
+      logoutBtnCustomer.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          authModule.logoutUser();
+        } catch (error) {
+          console.error('Error during logout:', error);
+        }
+      });
+    }
+    
+    // Handle admin/seller logout button click
+    if (logoutBtnAdminSeller) {
+      logoutBtnAdminSeller.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          authModule.logoutUser();
+        } catch (error) {
+          console.error('Error during logout:', error);
+        }
+      });
+    }
+    
+    // Handle dashboard link click - redirect based on role
+    if (dashboardLink) {
+      dashboardLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (isLoggedIn()) {
+          if (checkUserRole('admin')) {
+            // Redirect admin to user management page
+            window.location.href = '/dashboard/admin/user-manage.html';
+          } else if (checkUserRole('seller')) {
+            // Redirect seller to order management page
+            window.location.href = '/dashboard/Seller/order-manage.html';
+          }
+        }
+      });
+    }
+  }
+});
+
 // DASHBOARD SIDEBAR
 const dashboardSidebar = document.getElementById('dashboard-sidebar');
 const togglePanel = document.getElementById('togglePanel');
 
-togglePanel.addEventListener('click', () => {
-  dashboardSidebar.classList.toggle('expanded');
-  togglePanel.classList.toggle('sidebar-expanded');
-});
-
-
-
-
-
-
+if (dashboardSidebar && togglePanel) {
+  togglePanel.addEventListener('click', () => {
+    dashboardSidebar.classList.toggle('expanded');
+    togglePanel.classList.toggle('sidebar-expanded');
+  });
+}
 
 

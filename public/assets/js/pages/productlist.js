@@ -156,6 +156,10 @@ const addCategoryFilter = (container, products) => {
   dropdown.addEventListener('change', (e) => {
     currentCategory = e.target.value;
     currentPage = 1; // Reset to first page when changing category
+    
+    // Update URL with the selected category
+    updateUrlWithCategory(currentCategory);
+    
     filterAndDisplayProducts();
   });
   
@@ -266,5 +270,56 @@ const initProductList = async () => {
   }
 };
 
+// Function to update the URL with the selected category
+const updateUrlWithCategory = (category) => {
+  // Create a new URL object based on the current URL
+  const url = new URL(window.location.href);
+  
+  // If category is 'all', remove the category parameter
+  if (category === 'all') {
+    url.searchParams.delete('category');
+  } else {
+    // Otherwise, set the category parameter
+    url.searchParams.set('category', category);
+  }
+  
+  // Update the URL without reloading the page
+  window.history.pushState({ category }, '', url.toString());
+};
+
+// Function to check for category parameter in URL and set the filter accordingly
+const checkUrlForCategory = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get('category');
+  
+  if (categoryParam) {
+    // Set the current category from URL parameter
+    currentCategory = categoryParam;
+    
+    // After the product list is initialized, set the dropdown to match the category
+    setTimeout(() => {
+      const categoryDropdown = document.getElementById('category-filter');
+      if (categoryDropdown) {
+        // Find the option with matching category value
+        const options = Array.from(categoryDropdown.options);
+        const matchingOption = options.find(option => 
+          option.value.toLowerCase() === categoryParam.toLowerCase()
+        );
+        
+        // If a matching option is found, select it
+        if (matchingOption) {
+          categoryDropdown.value = matchingOption.value;
+        }
+      }
+    }, 100); // Small delay to ensure the dropdown is created
+  }
+};
+
 // Initialize the product list when the DOM is loaded
-document.addEventListener('DOMContentLoaded', initProductList);
+document.addEventListener('DOMContentLoaded', () => {
+  // Check for category parameter in URL
+  checkUrlForCategory();
+  
+  // Initialize the product list
+  initProductList();
+});

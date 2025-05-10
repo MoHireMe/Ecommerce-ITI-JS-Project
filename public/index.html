@@ -15,6 +15,70 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./assets/css/global.css" />
+    <script type="module">
+      import { isLoggedIn, checkUserRole, getCurrentUser } from './assets/js/auth.js';
+      
+      // Function to control UI elements based on authentication status
+      function setupAuthUI() {
+        // Store authentication state in a global variable
+        window.userAuthState = {
+          isLoggedIn: isLoggedIn(),
+          isCustomer: isLoggedIn() && checkUserRole('customer'),
+          isSeller: isLoggedIn() && checkUserRole('seller'),
+          isAdmin: isLoggedIn() && checkUserRole('admin'),
+          currentUser: getCurrentUser()
+        };
+        
+        // Add classes to the HTML element for CSS targeting
+        if (window.userAuthState.isLoggedIn) {
+          document.documentElement.classList.add('user-logged-in');
+          
+          if (window.userAuthState.isCustomer) {
+            document.documentElement.classList.add('user-is-customer');
+          } else if (window.userAuthState.isSeller) {
+            document.documentElement.classList.add('user-is-seller');
+          } else if (window.userAuthState.isAdmin) {
+            document.documentElement.classList.add('user-is-admin');
+          }
+        }
+      }
+      
+      // Run immediately
+      setupAuthUI();
+      
+      // Also add a DOMContentLoaded listener for any elements that might not be available yet
+      document.addEventListener('DOMContentLoaded', function() {
+        const loginBtn = document.querySelector('.login-btn');
+        const navButtons = document.querySelector('.nav-buttons');
+        const iconsDiv = document.querySelector('.icons');
+        const userDropdown = document.getElementById('user-dropdown');
+        const customerDropdown = document.getElementById('customer-dropdown');
+        const adminSellerDropdown = document.getElementById('admin-seller-dropdown');
+        
+        if (window.userAuthState.isLoggedIn) {
+          // Hide login button for all logged-in users
+          if (loginBtn) loginBtn.style.display = 'none';
+          if (navButtons) navButtons.style.display = 'none';
+          
+          // Show appropriate dropdown based on role
+          if (window.userAuthState.isCustomer) {
+            // Show customer dropdown
+            if (iconsDiv) iconsDiv.style.display = 'flex';
+            if (customerDropdown) customerDropdown.style.display = 'block';
+            if (adminSellerDropdown) adminSellerDropdown.style.display = 'none';
+          } else if (window.userAuthState.isSeller || window.userAuthState.isAdmin) {
+            // Show admin/seller dropdown
+            if (iconsDiv) iconsDiv.style.display = 'flex';
+            if (customerDropdown) customerDropdown.style.display = 'none';
+            if (adminSellerDropdown) adminSellerDropdown.style.display = 'block';
+          }
+        } else {
+          // User is not logged in, show login button and hide icons
+          if (navButtons) navButtons.style.display = 'flex';
+          if (iconsDiv) iconsDiv.style.display = 'none';
+        }
+      });
+    </script>
   </head>
   <body>
 
@@ -25,31 +89,51 @@
     <div class="mobile-sidebar">
       <div class="close-btn"><i class="fas fa-times"></i></div>
       <ul class="sidebar-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Shop</a></li>
-        <li><a href="#">Deals</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="./product-list.html">Shop</a></li>
+        <li><a href="#contactus">Contact</a></li>
       </ul>
     </div>
 
     
-        <a href="#" class="logo">
+        <a href="/" class="logo">
           <img src="./assets/images/logo.png" alt="Buy Hive Logo" />
         </a>
         <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Shop</a></li>
-          <li><a href="#">Deals</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="./product-list.html">Shop</a></li>
+          <li><a href="#contactus">Contact</a></li>
         </ul>
-        <div class="nav-search">
-          <input type="text" placeholder="Search for products..." />
-          <button><i class="fas fa-search"></i></button>
+        <div class="nav-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
         </div>
         <div class="icons">
-          <i class="fas fa-user"></i>
+          <div class="user-icon-container">
+            <i class="fas fa-user" id="user-icon"></i>
+            
+            <!-- Customer dropdown menu -->
+            <div class="user-dropdown" id="customer-dropdown">
+              <a href="/profile/user-profile" class="user-dropdown-item">
+                <i class="fas fa-user-edit"></i> Edit Profile
+              </a>
+              <a href="/profile/user-orders" class="user-dropdown-item">
+                <i class="fas fa-shopping-bag"></i> Orders
+              </a>
+              <a href="#" class="user-dropdown-item" id="logout-btn-customer">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+              </a>
+            </div>
+            
+            <!-- Admin/Seller dropdown menu -->
+            <div class="user-dropdown" id="admin-seller-dropdown" style="display: none;">
+              <a href="#" class="user-dropdown-item" id="dashboard-link">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+              </a>
+              <a href="#" class="user-dropdown-item" id="logout-btn-admin-seller">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+              </a>
+            </div>
+          </div>
           <i class="fas fa-shopping-cart"></i>
         </div>
       </nav>
@@ -61,101 +145,41 @@
         </div>
       </section>
 
-      <div id="togglePanel">&#10095;</div>
 
-<!-- Sidebar -->
-<div id="dashboard-sidebar">
-  <ul class="sidebar-links">
-    <li><a href="#"><i class="fa fa-tachometer"></i> Dashboard</a></li>
-    <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
-    <li><a href="#"><i class="fa fa-users"></i> Users</a></li>
-    <li><a href="#"><i class="fa fa-chart-line"></i> Analytics</a></li>
-    <li><a href="#"><i class="fa fa-box"></i> Products</a></li>
-  </ul>
-</div>
 
       <section class="categories">
         <h2 style="margin-bottom: 30px">Shop by Category</h2>
         <div class="category-list">
-          <div class="category-card">
-            <img
-              src="https://t4.ftcdn.net/jpg/03/64/41/07/360_F_364410756_Ev3WoDfNyxO9c9n4tYIsU5YBQWAP3UF8.jpg"
-              alt="Electronics"
-            />
-            <p>Electronics</p>
-          </div>
-          <div class="category-card">
-            <img
-              src="https://c1.wallpaperflare.com/preview/924/432/853/store-clothing-shop-bouique.jpg"
-              alt="Fashion"
-            />
-            <p>Fashion</p>
-          </div>
-          <div class="category-card">
-            <img
-              src="https://img.freepik.com/premium-photo/commercial-cover-design-shoes_115919-50139.jpg"
-              alt="Sneakers"
-            />
-            <p>Sneakers</p>
-          </div>
-          <div class="category-card">
-            <img
-              src="https://store.thaihousebh.com/wp-content/uploads/2021/08/wepik-202171-19522-min-800x600.jpg"
-              alt="Beauty"
-            />
-            <p>Beauty</p>
-          </div>
+          <a href="./product-list.html?category=Electronics" class="category-link">
+            <div class="category-card">
+              <img
+                src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZWxlY3Ryb25pY3N8ZW58MHx8MHx8fDA%3D"
+                alt="Electronics"
+              />
+              <p>Electronics</p>
+            </div>
+          </a>
+          <a href="./product-list.html?category=Sneakers" class="category-link">
+            <div class="category-card">
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c25lYWtlcnN8ZW58MHx8MHx8fDA%3D"
+                alt="Sneakers"
+              />
+              <p>Sneakers</p>
+            </div>
+          </a>
         </div>
       </section>
 
-      <section class="visuals">
-        <div class="promo-banner">
-          <div class="promo-text">
-            <h2>Flash Deals</h2>
-            <p>Up to 50% off on selected items!</p>
-          </div>
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/046/796/759/non_2x/daily-deals-illustration-featuring-shopping-goods-and-hunting-for-discounts-set-against-a-flat-cartoon-style-background-vector.jpg"
-            alt="Deals"
-          />
-        </div>
-      </section>
 
       <section class="featured">
         <h2 style="margin-bottom: 25px">Featured Products</h2>
-        <div class="product-grid">
-          <div class="product-card">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT083w3MMGwJI6liwiDcpW0dOpOxsBnCKJAxA&s"
-              alt="Product 1"
-            />
-            <p>Product 1</p>
-          </div>
-          <div class="product-card">
-            <img
-              src="https://source.unsplash.com/150x150/?product,clothing"
-              alt="Product 2"
-            />
-            <p>Product 2</p>
-          </div>
-          <div class="product-card">
-            <img
-              src="https://source.unsplash.com/150x150/?product,furniture"
-              alt="Product 3"
-            />
-            <p>Product 3</p>
-          </div>
-          <div class="product-card">
-            <img
-              src="https://source.unsplash.com/150x150/?product,cosmetics"
-              alt="Product 4"
-            />
-            <p>Product 4</p>
-          </div>
+        <div class="product-grid" id="featured-products">
+          <!-- Product cards will be dynamically inserted here -->
         </div>
       </section>
 
-      <section class="contactus">
+      <section class="contactus" id="contactus">
         <div class="contactus-container">
           <h2 class="contacttitle">Contact Us</h2>
           <div class="contact-details">
@@ -264,5 +288,74 @@
       crossorigin="anonymous"
     ></script>
     <script src="./assets/js/main.js"></script>
+    <script type="module">
+      import getProductCard from './assets/components/product-card.js';
+      import { getAllApprovedProducts } from './assets/js/api.js';
+      
+      // Function to generate star rating based on a number (1-5)
+      function generateStars(rating) {
+        const fullStar = '★';
+        const emptyStar = '☆';
+        let stars = '';
+        
+        for (let i = 1; i <= 5; i++) {
+          if (i <= rating) {
+            stars += fullStar;
+          } else {
+            stars += emptyStar;
+          }
+        }
+        
+        return stars;
+      }
+      
+      // Function to render featured products
+      async function renderFeaturedProducts() {
+        const container = document.getElementById('featured-products');
+        if (!container) return;
+        
+        // Show loading state
+        container.innerHTML = '<div class="loading">Loading featured products...</div>';
+        
+        try {
+          // Fetch all approved products
+          const products = await getAllApprovedProducts();
+          
+          // Take only the first 4 products
+          const featuredProducts = products.slice(0, 4);
+          
+          // Clear container
+          container.innerHTML = '';
+          
+          if (featuredProducts.length === 0) {
+            container.innerHTML = '<p>No featured products available.</p>';
+            return;
+          }
+          
+          // Render each product
+          featuredProducts.forEach(product => {
+            // Generate random star rating between 3 and 5
+            const randomRating = Math.floor(Math.random() * 3) + 3;
+            const stars = generateStars(randomRating);
+            
+            const card = getProductCard(
+              product.image,
+              product.name, // Using 'name' instead of 'title' as per db.json structure
+              stars,
+              product.price,
+              product.category,
+              product.id
+            );
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error('Error fetching featured products:', error);
+          container.innerHTML = '<p>Failed to load featured products. Please try again later.</p>';
+        }
+      }
+      
+      // Initialize when DOM is loaded
+      document.addEventListener('DOMContentLoaded', renderFeaturedProducts);
+    </script>
   </body>
 </html>

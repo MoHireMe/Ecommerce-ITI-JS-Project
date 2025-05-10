@@ -60,12 +60,20 @@ form.addEventListener("submit", async (e) => {
   
   if (isValid) {
     try {
-      // Get return URL from query parameters (change #7)
-      const urlParams = new URLSearchParams(window.location.search);
-      const returnUrl = urlParams.get('returnUrl') || './index.html';
+      // Login the user
+      const user = await loginUser(emailVal, passVal, checkBoxInput.checked);
       
-      await loginUser(emailVal, passVal, checkBoxInput.checked);
-      window.location.href = returnUrl;
+      // Redirect based on user role
+      if (user.role === 'admin') {
+        // Redirect admin to user management dashboard
+        window.location.href = '/dashboard/admin/user-manage.html';
+      } else if (user.role === 'seller') {
+        // Redirect seller to order management dashboard
+        window.location.href = '/dashboard/Seller/order-manage.html';
+      } else {
+        // Redirect customer to home page
+        window.location.href = '/index.html';
+      }
     } catch (err) {
       error[1].innerText = err.message;
       

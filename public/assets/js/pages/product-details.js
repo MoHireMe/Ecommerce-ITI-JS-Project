@@ -236,6 +236,23 @@ const displayProductData = async ({
   if (cartBtn && quantityInput) {
     cartBtn.addEventListener('click', async () => {
       try {
+        // Import auth functions directly in the event listener
+        const { isLoggedIn, checkUserRole } = await import('../auth.js');
+        
+        // Check if user is logged in and is a customer
+        if (!isLoggedIn()) {
+          alert('You need to be logged in to add items to your cart.');
+          window.location.href = './login.html';
+          return;
+        }
+        
+        // Check if the logged-in user is a customer
+        if (!checkUserRole('customer')) {
+          alert('Only customers can add items to the cart.');
+          window.location.href = './login.html';
+          return;
+        }
+        
         // Disable button to prevent multiple clicks
         cartBtn.disabled = true;
         cartBtn.textContent = "Adding to Cart...";

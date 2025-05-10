@@ -16,6 +16,54 @@
     />
     <link rel="stylesheet" href="./assets/css/global.css" />
     <link rel="stylesheet" href="./assets/css/product-details.css" />
+    <script type="module">
+      import { isLoggedIn, checkUserRole } from './assets/js/auth.js';
+      
+      // Function to control UI elements based on authentication status
+      function setupAuthUI() {
+        // Store authentication state in a global variable
+        window.userAuthState = {
+          isLoggedIn: isLoggedIn(),
+          isCustomer: isLoggedIn() && checkUserRole('customer')
+        };
+        
+        // Add a class to the HTML element for CSS targeting
+        if (window.userAuthState.isLoggedIn) {
+          document.documentElement.classList.add('user-logged-in');
+          if (window.userAuthState.isCustomer) {
+            document.documentElement.classList.add('user-is-customer');
+          }
+        }
+      }
+      
+      // Run immediately
+      setupAuthUI();
+      
+      // Also add a DOMContentLoaded listener for any elements that might not be available yet
+      document.addEventListener('DOMContentLoaded', function() {
+        const loginBtn = document.querySelector('.login-btn');
+        const navButtons = document.querySelector('.nav-buttons');
+        const iconsDiv = document.querySelector('.icons');
+        
+        if (window.userAuthState.isLoggedIn) {
+          if (window.userAuthState.isCustomer) {
+            // If user is a customer, hide login button and show icons
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (navButtons) navButtons.style.display = 'none';
+            if (iconsDiv) iconsDiv.style.display = 'flex';
+          } else {
+            // For other roles, hide login button but don't show icons
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (navButtons) navButtons.style.display = 'none';
+            if (iconsDiv) iconsDiv.style.display = 'none';
+          }
+        } else {
+          // User is not logged in, show login button and hide icons
+          if (navButtons) navButtons.style.display = 'flex';
+          if (iconsDiv) iconsDiv.style.display = 'none';
+        }
+      });
+    </script>
     <script
       type="module"
       defer
@@ -48,16 +96,27 @@
         <ul class="nav-links">
           <li><a href="./index.html">Home</a></li>
           <li><a href="./product-list.html">Shop</a></li>
-          <li><a href="#">Deals</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          
         </ul>
-        <div class="nav-search">
-          <input type="text" placeholder="Search for products..." />
-          <button><i class="fas fa-search"></i></button>
+       
+        <div class="nav-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
         </div>
         <div class="icons">
-          <i class="fas fa-user"></i>
+          <div class="user-icon-container">
+            <i class="fas fa-user" id="user-icon"></i>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="/profile/user-profile" class="user-dropdown-item">
+                <i class="fas fa-user-edit"></i> Edit Profile
+              </a>
+              <a href="/profile/user-orders" class="user-dropdown-item">
+                <i class="fas fa-shopping-bag"></i> Orders
+              </a>
+              <a href="#" class="user-dropdown-item" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+              </a>
+            </div>
+          </div>
           <i class="fas fa-shopping-cart"></i>
         </div>
       </nav>

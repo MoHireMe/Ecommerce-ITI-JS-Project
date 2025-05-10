@@ -44,6 +44,35 @@ const getProductCard = (imgSrc, title, stars, price, cat, pid) => {
     button.textContent = "Adding...";
 
     try {
+      // Import auth functions directly in the event listener
+      const { isLoggedIn, checkUserRole } = await import('../js/auth.js');
+      
+      // Check if user is logged in and is a customer
+      if (!isLoggedIn()) {
+        button.textContent = "Login Required";
+        setTimeout(() => {
+          button.textContent = "Add to Cart";
+          button.disabled = false;
+        }, 1000);
+        
+        alert('You need to be logged in to add items to your cart.');
+        window.location.href = './login.html';
+        return;
+      }
+      
+      // Check if the logged-in user is a customer
+      if (!checkUserRole('customer')) {
+        button.textContent = "Customer Only";
+        setTimeout(() => {
+          button.textContent = "Add to Cart";
+          button.disabled = false;
+        }, 1000);
+        
+        alert('Only customers can add items to the cart.');
+        window.location.href = './login.html';
+        return;
+      }
+
       const product = {
         id: pid,
         name: productTitle,

@@ -163,6 +163,50 @@ const addCategoryFilter = (container, products) => {
   container.appendChild(filterContainer);
 };
 
+// Function to add search input field to the navbar
+const initNavbarSearch = () => {
+  const searchInput = document.getElementById('nav-search-input');
+  const searchButton = document.getElementById('search-btn');
+  
+  if (!searchInput || !searchButton) return;
+
+  // Event listener for the search button
+  searchButton.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    searchProducts(query); // Call searchProducts when search button is clicked
+  });
+
+  // Event listener for the input field to trigger search on pressing Enter
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    searchProducts(query); // Call searchProducts when user types
+  });
+};
+
+// Updated searchProducts to filter by category as well
+const searchProducts = (query) => {
+  // Filter products based on the search query and current category
+  if (query === '') {
+    // If no search query, show products in the selected category
+    filterAndDisplayProducts(); // Filter by category
+  } else {
+    const filteredProducts = allProducts.filter(product => {
+      const matchesCategory = currentCategory === 'all' || product.category.toLowerCase() === currentCategory.toLowerCase();
+      const matchesSearch = product.name.toLowerCase().includes(query.toLowerCase());
+      return matchesCategory && matchesSearch;  // Filter based on both category and search query
+    });
+    
+    // Update currentProducts to match the filtered products
+    currentProducts = filteredProducts;
+
+    // Reset to the first page when searching
+    currentPage = 1;
+
+    // Display the filtered products
+    displayProducts();
+  }
+};
+
 // Function to initialize the product list
 const initProductList = async () => {
   // Get the container from the HTML
@@ -187,6 +231,9 @@ const initProductList = async () => {
       productListContainer.innerHTML = '<div class="no-products">No products available at the moment.</div>';
       return;
     }
+    
+    // Add search bar to the container
+    initNavbarSearch(); // Initialize navbar search
     
     // Create controls container (filter and pagination)
     const controlsContainer = document.createElement('div');
@@ -221,4 +268,3 @@ const initProductList = async () => {
 
 // Initialize the product list when the DOM is loaded
 document.addEventListener('DOMContentLoaded', initProductList);
-

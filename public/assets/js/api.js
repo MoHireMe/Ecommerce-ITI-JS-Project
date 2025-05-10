@@ -1,8 +1,19 @@
-export async function getAllApprovedProducts() {
+export async function getAllApprovedProducts(searchQuery = "") {
+  // Fetch approved products from the API
   const res = await fetch("/products?approved=true");
   const data = await res.json();
+  
   if (!res.ok) throw Error("Products Not found");
   if (!res) throw Error("Unexpected Error");
+
+  // If a search query is provided, filter products based on the query
+  if (searchQuery) {
+    return data.filter(product => 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  // Return all products if no search query
   return data;
 }
 
@@ -139,4 +150,34 @@ export async function addReview(review) {
   });
   if (!res.ok) throw new Error("Failed to add review");
   return await res.json();
+}
+
+// Get cart items for a given order
+export async function getCartItems(orderId) {
+  const res = await fetch(`/cart/${orderId}`);
+  if (!res.ok) throw new Error("Failed to fetch cart items");
+  return await res.json();
+}
+
+// Submit order
+export async function submitOrder(order) {
+  try {
+    // Assuming you're using fetch to interact with the backend (db.json or API)
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order),
+    });
+
+    if (!response.ok) {
+      throw new Error('Order submission failed');
+    }
+
+    return response; // Return the response or data after successful order creation
+  } catch (error) {
+    console.error('Error submitting order:', error);
+    throw error;
+  }
 }

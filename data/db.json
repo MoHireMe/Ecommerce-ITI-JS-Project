@@ -161,30 +161,6 @@
       "approved": true,
       "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cnVubmluZyUyMHNob2V8ZW58MHx8MHx8fDA%3D",
       "createdAt": "2025-05-03T15:28:00Z"
-    },
-    {
-      "id": "209",
-      "sellerId": "3",
-      "name": "Casual Sneakers",
-      "description": "Casual sneakers for everyday wear and comfort.",
-      "category": "Sneakers",
-      "price": 49.99,
-      "stock": 150,
-      "approved": true,
-      "image": "https://images.unsplash.com/photo-1463100099107-aa0980c362e6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FzdWFsJTIwc2hvZXN8ZW58MHx8MHx8fDA%3D",
-      "createdAt": "2025-05-03T15:29:00Z"
-    },
-    {
-      "id": "210",
-      "sellerId": "3",
-      "name": "Outdoor Sneakers",
-      "description": "Rugged sneakers for all-terrain hiking and exploration.",
-      "category": "Sneakers",
-      "price": 79.99,
-      "stock": 120,
-      "approved": true,
-      "image": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGlraW5nJTIwc2hvZXN8ZW58MHx8MHx8fDA%3D",
-      "createdAt": "2025-05-03T15:30:00Z"
     }
   ],
   "orders": [
@@ -239,35 +215,8 @@
         }
       ],
       "total": 416.05,
+      "status": "pending",
       "date": "2025-05-10T13:50:23.636Z"
-    },
-    {
-      "id": "d4c0",
-      "customerId": "8b6b",
-      "products": [
-        {
-          "id": "101",
-          "name": "Wireless Mouse",
-          "price": 25.99,
-          "quantity": 1
-        }
-      ],
-      "total": 25.99,
-      "date": "2025-05-10T13:54:37.070Z"
-    },
-    {
-      "id": "d0cb",
-      "customerId": "8b6b",
-      "products": [
-        {
-          "id": "202",
-          "name": "Wireless Charger",
-          "price": 66.08,
-          "quantity": 1
-        }
-      ],
-      "total": 66.08,
-      "date": "2025-05-10T14:02:30.136Z"
     }
   ],
   "reviews": [

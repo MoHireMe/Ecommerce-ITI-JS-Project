@@ -1,0 +1,572 @@
+/* Admin Dashboard Styles */
+:root {
+  --primary-color: #00c875;
+  --secondary-color: #333;
+  --light-gray: #f5f5f5;
+  --border-color: #e0e0e0;
+  --text-color: #333;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.main-content.sidebar-expanded {
+  margin-left: 250px;
+}
+
+@media (max-width: 768px) {
+  .main-content.sidebar-expanded {
+    margin-left: 200px;
+  }
+}
+
+/* Page Title */
+.page-title {
+  font-size: 24px;
+  color: var(--secondary-color);
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+/* Table Styles */
+.table-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+
+th {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  border: none;
+}
+
+td {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
+  border: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background-color: var(--light-gray);
+}
+
+tr:hover {
+  background-color: rgba(0, 200, 117, 0.05);
+}
+
+/* Button Styles */
+.btn {
+  padding: 8px 15px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #00b167;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background-color: #ff5252;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #ff3838;
+  transform: translateY(-2px);
+}
+
+.btn-edit {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+/* Dialog Styles */
+dialog {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  max-width: 500px;
+  width: 100%;
+  /* Center the dialog in the screen */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+/* Confirmation Dialog */
+.confirm-dialog {
+  max-width: 400px;
+  text-align: center;
+  padding: 30px;
+}
+
+.confirm-dialog .dialog-icon {
+  font-size: 3rem;
+  color: #ff5252;
+  margin-bottom: 20px;
+}
+
+.confirm-dialog h3 {
+  margin: 0 0 10px 0;
+  color: var(--secondary-color);
+}
+
+.confirm-dialog p {
+  margin-bottom: 25px;
+  color: #666;
+}
+
+.confirm-dialog .dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-dialog .btn-cancel {
+  background-color: #e0e0e0;
+  color: #666;
+}
+
+/* Select Styling */
+select {
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: var(--text-color);
+  width: 100%;
+  max-width: 200px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 200, 117, 0.2);
+}
+
+select:hover {
+  border-color: #aaa;
+}
+
+/* Style for different status options */
+select option {
+  padding: 10px;
+}
+
+/* Status select specific styling */
+select.status-select {
+  font-weight: 500;
+  min-width: 140px;
+  text-align: center;
+  padding: 6px 30px 6px 12px;
+}
+
+/* Style select based on current status */
+select.status-pending {
+  background-color: #fff8e1;
+  color: #d68910;
+  border-color: #ffeaa7;
+}
+
+select.status-shipped {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-color: #c8e6c9;
+}
+
+select.status-delivered {
+  background-color: #e0f2f1;
+  color: #00695c;
+  border-color: #b2dfdb;
+}
+
+.confirm-dialog .btn-cancel:hover {
+  background-color: #d0d0d0;
+}
+
+.confirm-dialog .btn-confirm {
+  background-color: #ff5252;
+  color: white;
+}
+
+.confirm-dialog .btn-confirm:hover {
+  background-color: #ff3838;
+}
+
+/* Order Details Dialog */
+.order-details-dialog {
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.dialog-header h3 {
+  margin: 0;
+  color: var(--secondary-color);
+}
+
+/* X Button Styling */
+#cancel-btn {
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-left: auto; /* Push to the right */
+}
+
+#cancel-btn:hover {
+  background-color: #f0f0f0;
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.order-items-table th {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.order-items-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.order-items-table tr:last-child td {
+  border-bottom: none;
+}
+
+.order-total-row {
+  background-color: var(--light-gray);
+  font-weight: bold;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog h3 {
+  color: var(--secondary-color);
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+dialog label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+dialog input, dialog select, dialog textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+}
+
+dialog input:focus, dialog select:focus, dialog textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+dialog button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+dialog button[type="submit"] {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+dialog button[type="submit"]:hover {
+  background-color: #00b167;
+}
+
+dialog button[type="button"] {
+  background-color: #e0e0e0;
+  color: var(--secondary-color);
+}
+
+dialog button[type="button"]:hover {
+  background-color: #d0d0d0;
+}
+
+/* Actions Column */
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Success and Error Messages */
+.success-message,
+.error-message {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.success-message {
+  background-color: #d5f5e3;
+  color: #1e8449;
+  border-left: 4px solid #2ecc71;
+}
+
+.error-message {
+  background-color: #fadbd8;
+  color: #943126;
+  border-left: 4px solid #e74c3c;
+}
+
+.success-message i,
+.error-message i {
+  font-size: 1.2rem;
+}
+
+/* Confirmation Dialog */
+.confirm-dialog {
+  width: 400px;
+  max-width: 90vw;
+  padding: 25px;
+  border-radius: var(--border-radius);
+  border: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  background-color: white;
+}
+
+.confirm-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-icon {
+  margin-bottom: 15px;
+}
+
+.dialog-icon i {
+  font-size: 3rem;
+  color: #e74c3c;
+}
+
+.confirm-dialog h3 {
+  margin: 0 0 15px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.confirm-dialog p {
+  margin: 0 0 20px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-cancel {
+  background-color: #f1f2f6;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background-color: #dfe4ea;
+}
+
+.btn-confirm {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #c0392b;
+}
+
+.status-pending {
+  background-color: #ffeaa7;
+  color: #d68910;
+}
+
+.status-shipped {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.status-delivered {
+  background-color: #b2dfdb;
+  color: #00695c;
+}
+
+/* Dashboard Sidebar Customization */
+#dashboard-sidebar {
+  background-color: white;
+  box-shadow: var(--shadow);
+}
+
+#dashboard-sidebar .sidebar-links li {
+  margin: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#dashboard-sidebar .sidebar-links a {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--secondary-color);
+  transition: all 0.2s ease;
+}
+
+#dashboard-sidebar .sidebar-links a:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-color);
+}
+
+#dashboard-sidebar .sidebar-links a i {
+  width: 20px;
+  text-align: center;
+}
+
+#togglePanel {
+  background-color: var(--primary-color);
+}
+
+#togglePanel:hover {
+  background-color: #00b167;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  th, td {
+    padding: 10px;
+  }
+}

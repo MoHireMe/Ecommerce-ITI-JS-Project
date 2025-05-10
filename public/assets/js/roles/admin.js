@@ -22,33 +22,32 @@ function populateUserTable() {
         emailTd.textContent = user.email;
 
         const roleTd = document.createElement('td');
-        roleTd.textContent = user.role;
+        // Capitalize the first letter of the role
+        roleTd.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
 
         const addressTd = document.createElement('td');
         addressTd.textContent = user.address;
 
         const statusTd = document.createElement('td');
+        statusTd.classList.add('user-status');
         statusTd.textContent = user.isActive ? 'Active' : 'Inactive';
-        if (!user.isActive) {
-          statusTd.classList.add('inactive');
-        }
 
         const actionsTd = document.createElement('td');
-        actionsTd.classList.add('actions');
+        actionsTd.classList.add('actions-cell');
 
         const editRoleBtn = document.createElement('button');
         editRoleBtn.textContent = 'Edit Role';
-        editRoleBtn.className = 'btn btn-edit-role';
+        editRoleBtn.className = 'btn btn-edit';
         editRoleBtn.addEventListener('click', () => editRole(user.id));
 
         const toggleBtn = document.createElement('button');
         toggleBtn.textContent = user.isActive ? 'Deactivate' : 'Activate';
-        toggleBtn.className = 'btn btn-deactivate';
+        toggleBtn.className = user.isActive ? 'btn btn-danger' : 'btn btn-primary';
         toggleBtn.addEventListener('click', () => toggleActivation(user.id));
 
         const editDetailsBtn = document.createElement('button');
         editDetailsBtn.textContent = 'Edit Details';
-        editDetailsBtn.className = 'btn btn-edit-details';
+        editDetailsBtn.className = 'btn btn-primary';
         editDetailsBtn.addEventListener('click', () => editDetails(user.id));
 
         actionsTd.appendChild(editRoleBtn);
@@ -76,13 +75,26 @@ function editRole(userId) {
   const newRole = prompt("Enter new role (admin, seller, customer):", user.role);
   if (!newRole || newRole === user.role) return;
 
+  // Validate role input
+  const validRoles = ['admin', 'seller', 'customer'];
+  if (!validRoles.includes(newRole.toLowerCase())) {
+    alert('Invalid role. Please enter admin, seller, or customer.');
+    return;
+  }
+
   fetch(`http://localhost:3000/users/${userId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ role: newRole }),
+    body: JSON.stringify({ role: newRole.toLowerCase() }),
     headers: { 'Content-Type': 'application/json' },
   })
     .then(res => res.json())
-    .then(() => populateUserTable())
+    .then(() => {
+      populateUserTable();
+      // Call the status styling function after table update
+      if (window.styleStatusCells) {
+        setTimeout(window.styleStatusCells, 100);
+      }
+    })
     .catch(err => console.error('Error updating role:', err));
 }
 
@@ -96,7 +108,13 @@ function toggleActivation(userId) {
     headers: { 'Content-Type': 'application/json' },
   })
     .then(res => res.json())
-    .then(() => populateUserTable())
+    .then(() => {
+      populateUserTable();
+      // Call the status styling function after table update
+      if (window.styleStatusCells) {
+        setTimeout(window.styleStatusCells, 100);
+      }
+    })
     .catch(err => console.error('Error toggling user activation:', err));
 }
 
@@ -116,8 +134,27 @@ function editDetails(userId) {
     headers: { 'Content-Type': 'application/json' },
   })
     .then(res => res.json())
-    .then(() => populateUserTable())
+    .then(() => {
+      populateUserTable();
+      // Call the status styling function after table update
+      if (window.styleStatusCells) {
+        setTimeout(window.styleStatusCells, 100);
+      }
+    })
     .catch(err => console.error('Error updating user details:', err));
 }
 
-window.onload = populateUserTable;
+// Initialize the table when the page loads
+window.onload = function() {
+  populateUserTable();
+  
+  // Initialize the main content margin based on sidebar state
+  const dashboardSidebar = document.getElementById('dashboard-sidebar');
+  const mainContent = document.querySelector('.main-content');
+  
+  if (dashboardSidebar && mainContent) {
+    if (dashboardSidebar.classList.contains('expanded')) {
+      mainContent.classList.add('sidebar-expanded');
+    }
+  }
+};

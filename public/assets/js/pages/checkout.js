@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         customerId,
         products: cartItems,
         total: parseFloat(cartTotal),
+        status: "pending",
         date: new Date().toISOString()
       };
 

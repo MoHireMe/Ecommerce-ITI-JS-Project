@@ -3,6 +3,7 @@ import {
   updateOrderById,
   getOrderProductsById,
   getProductNameById,
+  getAllProductsBySellerId,
 } from "../api.js";
 import { getCurrentUser } from "../auth.js";
 
@@ -43,46 +44,103 @@ const displayTableBody = (ord) => {
         continue;
       }
       const td = document.createElement("td");
-      td.innerText = item[data];
+      
+      // Style the status cell with appropriate colors
+      if (data === 'status') {
+        td.classList.add('order-status');
+        const statusBadge = document.createElement('span');
+        statusBadge.classList.add('status-badge');
+        
+        // Apply specific status styling based on value
+        switch(item[data]) {
+          case 'pending':
+            statusBadge.classList.add('status-pending');
+            break;
+          case 'shipped':
+            statusBadge.classList.add('status-shipped');
+            break;
+          case 'delivered':
+            statusBadge.classList.add('status-delivered');
+            break;
+        }
+        
+        statusBadge.textContent = item[data];
+        td.appendChild(statusBadge);
+      } else {
+        td.innerText = item[data];
+      }
+      
       tr.append(td);
     }
 
-    for (const el of [["show-products", "Show Products"]]) {
-      const td = document.createElement("td");
-      const btn = document.createElement("button");
+    // Add Show Products button with admin styling
+    const actionTd = document.createElement("td");
+    const actionBtn = document.createElement("button");
 
-      btn.classList.add(el[0]);
-      btn.innerText = el[1];
+    actionBtn.classList.add("show-products", "btn", "btn-info");
+    actionBtn.innerHTML = '<i class="fa fa-eye"></i> Show Products';
 
-      td.append(btn);
-      tr.append(td);
-    }
-    const SelectTd = document.createElement("td");
-    const Select = document.createElement("Select");
+    actionTd.append(actionBtn);
+    tr.append(actionTd);
+    
+    // Add status select dropdown with admin styling
+    const statusTd = document.createElement("td");
+    const statusSelect = document.createElement("select");
 
-    Select.classList.add("status-select");
+    statusSelect.classList.add("status-select", "form-control");
+    
+    // Add options for the three allowed statuses: pending, shipped, delivered
     for (const opt of ["pending", "shipped", "delivered"]) {
       const option = document.createElement("option");
       option.value = opt;
-      option.innerText = opt;
+      option.innerText = opt.charAt(0).toUpperCase() + opt.slice(1); // Capitalize first letter
+      
+      // Set selected option based on current status
       if (item.status == opt) {
         option.selected = true;
+        // Add class to the select based on current status
+        statusSelect.classList.add(`status-${opt}`);
       }
-      Select.append(option);
+      
+      statusSelect.append(option);
     }
 
-    SelectTd.append(Select);
-    tr.append(SelectTd);
+    // Add event listener to update select styling when status changes
+    statusSelect.addEventListener('change', function() {
+      // Remove all status classes
+      this.classList.remove('status-pending', 'status-shipped', 'status-delivered');
+      // Add class for the new status
+      this.classList.add(`status-${this.value}`);
+    });
+
+    statusTd.append(statusSelect);
+    tr.append(statusTd);
     tbodyTag.append(tr);
   });
 };
 
 try {
   const orders = await getAllOrders();
-  const sellerOrders = orders.filter((order) =>
-    order.products.some((product) => product.sellerId === user.id)
-  );
-  console.log(sellerOrders);
+  // Get all products created by this seller
+  const sellerProducts = await getAllProductsBySellerId(user.id);
+  const sellerProductIds = sellerProducts.map(product => product.id);
+  
+  // Filter orders that contain products created by this seller
+  const sellerOrders = orders.filter((order) => {
+    if (!order.products || !Array.isArray(order.products)) return false;
+    
+    return order.products.some((product) => {
+      // Check if product has a sellerId that matches the current user
+      if (product.sellerId && product.sellerId === user.id) {
+        return true;
+      }
+      
+      // If sellerId is missing, check if the productId matches any of this seller's products
+      return sellerProductIds.includes(product.productId || product.id);
+    });
+  });
+  
+  console.log("Seller orders:", sellerOrders);
 
   displayTableHeads(sellerOrders);
   displayTableBody(sellerOrders);
@@ -106,16 +164,32 @@ rows.forEach((row) => {
           productOfOrder = [];
         }
         
-        const filteredProducts = productOfOrder.filter(
-          (item) => item && item.sellerId == user.id
-        );
+        // Get all products created by this seller for reference
+        const sellerProducts = await getAllProductsBySellerId(user.id);
+        const sellerProductIds = sellerProducts.map(product => product.id);
+        
+        // Filter products that belong to this seller
+        const filteredProducts = productOfOrder.filter(item => {
+          if (!item) return false;
+          
+          // If product has sellerId that matches current user
+          if (item.sellerId && item.sellerId === user.id) {
+            return true;
+          }
+          
+          // If sellerId is missing, check if productId matches any of seller's products
+          return sellerProductIds.includes(item.productId || item.id);
+        });
         const table = document.createElement("table");
+        table.classList.add("styled-table");
         const head = document.createElement("thead");
         const body = document.createElement("tbody");
-
-        cancelBtn = document.createElement("button");
-        cancelBtn.id = "cancel-btn";
-        cancelBtn.innerText = "X";
+        
+        // Use the close button we added to the HTML instead of creating a new one
+        const closeBtn = document.getElementById("close-product-dialog");
+        closeBtn.addEventListener("click", () => {
+          document.getElementById("product-dialog").close();
+        });
 
         const firstProduct = productOfOrder[0];
         if (firstProduct) {
@@ -146,14 +220,16 @@ rows.forEach((row) => {
 
         table.append(head);
         table.append(body);
-        dialog.append(cancelBtn);
-        dialog.append(table);
+        
+        // Clear previous content and add new table to the dialog content div
+        const dialogContent = document.getElementById('product-dialog-content');
+        dialogContent.innerHTML = '';
+        dialogContent.appendChild(table);
+        
+        // Show the dialog
         dialog.showModal();
-
-        cancelBtn.addEventListener("click", () => {
-          dialog.innerHTML = "";
-          dialog.close();
-        });
+        
+        // Event listener for close button is already added above
       } catch (error) {}
     }
   });

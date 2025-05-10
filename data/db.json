@@ -60,8 +60,8 @@
       "name": "Mechanical Keyboard",
       "description": "RGB Backlit mechanical keyboard with blue switches",
       "category": "Electronics",
-      "price": 45,
-      "stock": 50,
+      "price": "45",
+      "stock": "50",
       "approved": false,
       "image": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWVjaGFuaWNhbCUyMGtleWJvYXJkfGVufDB8fDB8fHww",
       "createdAt": "2025-04-28T11:00:00Z"
@@ -170,13 +170,11 @@
       "products": [
         {
           "productId": "101",
-          "sellerId": "8b6b",
           "quantity": 2,
           "priceAtPurchase": 25.99
         },
         {
           "productId": "102",
-          "sellerId": "8b6b",
           "quantity": 2,
           "priceAtPurchase": 25.99
         }

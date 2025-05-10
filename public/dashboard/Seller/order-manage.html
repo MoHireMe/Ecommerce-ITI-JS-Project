@@ -3,43 +3,223 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Seller Order Management</title>
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../admin/admin-style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <script
       type="module"
       src="../../assets/js/dashboard/seller-order-manage.js"
     ></script>
     <style>
+      /* Fix for horizontal scrollbar */
+      .main-content {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      
+      /* Custom dialog styling */
+      .modal-dialog {
+        max-width: 800px;
+        width: 90%;
+        max-height: 85vh;
+        overflow-y: auto;
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 0;
+      }
+      
+      .dialog-content {
+        padding: 25px;
+      }
+      
+      .dialog-title {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: var(--secondary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 10px;
+      }
+      
+      .dialog-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      
+      /* Responsive table styling */
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 20px;
+        box-shadow: var(--shadow);
+        border-radius: var(--border-radius);
+        max-width: 100%; /* Ensure container doesn't overflow parent */
+      }
+      
       table {
-        border: 2px solid black;
+        width: 100%;
         border-collapse: collapse;
+        background-color: white;
       }
+      
+      th, td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        overflow: hidden;
+        height: auto;
+      }
+      
+      /* Allow text wrapping for specific columns */
+      td:nth-child(2), /* Customer ID column */
+      td:nth-child(5) { /* Created At column */
+        white-space: normal;
+        word-wrap: break-word;
+        min-height: 60px;
+        vertical-align: middle;
+      }
+      
+      /* Keep other columns with nowrap */
+      td:nth-child(1), /* ID column */
+      td:nth-child(3), /* Total column */
+      td:nth-child(4), /* Status column */
+      td:nth-child(6), /* Show Products column */
+      td:nth-child(7) { /* Status Change column */
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      
       th {
-        border: 2px solid black;
-        border-collapse: collapse;
-        text-align: center;
-        padding: 5px 10px;
+        background-color: var(--light-gray);
+        font-weight: 600;
+        color: var(--secondary-color);
+        position: sticky;
+        top: 0;
       }
-      td {
-        border: 2px solid black;
-        border-collapse: collapse;
-        text-align: center;
-        padding: 5px 10px;
+      
+      tbody tr:hover {
+        background-color: rgba(0, 200, 117, 0.05);
       }
-      .del-btn {
-        border: 0;
-        background-color: none;
+      
+      /* Fixed width for each column */
+      td:nth-child(1), th:nth-child(1) { /* ID column */
+        width: 80px;
+        max-width: 80px;
       }
-      dialog {
-        width: 50vw;
-        height: 50vh;
+      
+      td:nth-child(2), th:nth-child(2) { /* Customer ID column */
+        width: 100px;
+        max-width: 100px;
+      }
+      
+      td:nth-child(3), th:nth-child(3) { /* Total column */
+        width: 80px;
+        max-width: 80px;
+      }
+      
+      td:nth-child(4), th:nth-child(4) { /* Status column */
+        width: 120px;
+        max-width: 120px;
+      }
+      
+      td:nth-child(5), th:nth-child(5) { /* Created At column */
+        width: 180px;
+        max-width: 180px;
+      }
+      
+      /* Status badge styling */
+      .status-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+      
+      .status-pending {
+        background-color: #ffeaa7;
+        color: #d68910;
+      }
+      
+      .status-shipped {
+        background-color: #c8e6c9;
+        color: #2e7d32;
+      }
+      
+      .status-delivered {
+        background-color: #b2dfdb;
+        color: #00695c;
+      }
+      
+      /* Make action buttons more compact */
+      td:nth-child(6), th:nth-child(6) { /* Show Products column */
+        width: 120px;
+        max-width: 120px;
+        white-space: nowrap;
+      }
+      
+      td:nth-child(7), th:nth-child(7) { /* Status Change column */
+        width: 140px;
+        max-width: 140px;
+        white-space: nowrap;
+      }
+      
+      /* Dialog table styling */
+      #product-dialog-content {
+        width: 100%;
+        overflow-x: auto;
+      }
+      
+      #product-dialog-content table {
+        width: 100%;
+        margin-top: 15px;
+      }
+      
+      #product-dialog-content th,
+      #product-dialog-content td {
+        padding: 12px 15px;
       }
     </style>
   </head>
   <body>
-    <table>
-      <thead></thead>
-      <tbody></tbody>
-    </table>
-    <dialog id="product-dialog"></dialog>
+    <div id="togglePanel">&#10095;</div>
+
+    <!-- Sidebar -->
+    <div id="dashboard-sidebar">
+      <ul class="sidebar-links">
+        <li><a href="product-manage.html"><i class="fa fa-box"></i> Product Management</a></li>
+        <li><a href="order-manage.html"><i class="fa fa-shopping-cart"></i> Order Management</a></li>
+      </ul>
+    </div>
+    
+    <div class="main-content">
+      <h1 class="page-title">Order Management</h1>
+      
+      <div class="table-container">
+        <table>
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <dialog id="product-dialog" class="modal-dialog">
+      <div class="dialog-content">
+        <h3 class="dialog-title">Order Products</h3>
+        <div id="product-dialog-content" class="table-container">
+          <!-- Product details will be inserted here -->
+        </div>
+        <div class="dialog-buttons">
+          <button id="close-product-dialog" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </dialog>
+    
+    <script src="../../assets/js/dashboard/sidebar.js"></script>
   </body>
 </html>

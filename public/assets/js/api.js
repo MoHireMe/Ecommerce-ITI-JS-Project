@@ -87,11 +87,43 @@ export async function getAllOrders() {
 }
 
 export async function getOrderProductsById(id) {
-  const res = await fetch(`/orders/${id}`);
-  const data = await res.json();
-  if (!res.ok) throw Error("Orders Not found");
-  if (!res) throw Error("Unexpected Error");
-  return data.products;
+  if (!id) throw new Error("Invalid Order ID");
+  
+  // Ensure id is treated as a string
+  const orderId = String(id);
+  
+  // First try to get all orders and filter by ID (more reliable method)
+  try {
+    console.log(`Fetching order with ID: ${orderId}`);
+    const allOrdersRes = await fetch('/orders');
+    if (!allOrdersRes.ok) throw new Error('Failed to fetch orders');
+    
+    const allOrders = await allOrdersRes.json();
+    console.log(`Found ${allOrders.length} orders, looking for ID: ${orderId}`);
+    
+    const targetOrder = allOrders.find(order => String(order.id) === orderId);
+    
+    if (!targetOrder) {
+      console.error(`Order with ID ${orderId} not found in orders list`);
+      throw new Error(`Order with ID ${orderId} not found`);
+    }
+    
+    console.log(`Found order with ID ${orderId}, products:`, targetOrder.products);
+    return targetOrder.products || [];
+  } catch (error) {
+    // If the first method fails, try direct fetch as fallback
+    console.log(`Error with first method: ${error.message}, trying direct fetch...`);
+    try {
+      const res = await fetch(`/orders/${orderId}`);
+      if (!res.ok) throw new Error(`Order not found: ${res.status}`);
+      
+      const data = await res.json();
+      return data.products || [];
+    } catch (secondError) {
+      console.error(`Both methods failed for order ID ${orderId}:`, secondError);
+      throw new Error(`Failed to fetch order products: ${secondError.message}`);
+    }
+  }
 }
 
 export async function getOrdersByCustomerId(id) {

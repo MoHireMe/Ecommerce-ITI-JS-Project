@@ -97,11 +97,17 @@ rows.forEach((row) => {
 
     if (e.target.classList.contains("show-products")) {
       try {
-        const productOfOrder = await getOrderProductsById(
-          row.getAttribute("data-id")
-        );
+        const orderId = row.getAttribute("data-id");
+        let productOfOrder = await getOrderProductsById(orderId);
+        
+        // Ensure productOfOrder is always an array, even if null or undefined is returned
+        if (!productOfOrder || !Array.isArray(productOfOrder)) {
+          console.warn(`No products found for order ${orderId} or invalid products data`);
+          productOfOrder = [];
+        }
+        
         const filteredProducts = productOfOrder.filter(
-          (item) => item.sellerId == user.id
+          (item) => item && item.sellerId == user.id
         );
         const table = document.createElement("table");
         const head = document.createElement("thead");

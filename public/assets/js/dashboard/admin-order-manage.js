@@ -286,7 +286,13 @@ rows.forEach((row) => {
     if (e.target.classList.contains("show-products") || e.target.closest('.show-products')) {
       try {
         const orderId = row.getAttribute("data-id");
-        const productOfOrder = await getOrderProductsById(orderId);
+        let productOfOrder = await getOrderProductsById(orderId);
+        
+        // Ensure productOfOrder is always an array, even if null or undefined is returned
+        if (!productOfOrder || !Array.isArray(productOfOrder)) {
+          console.warn(`No products found for order ${orderId} or invalid products data`);
+          productOfOrder = [];
+        }
 
         // Clear previous dialog content
         dialog.innerHTML = '';

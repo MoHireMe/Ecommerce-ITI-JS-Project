@@ -179,12 +179,6 @@
           "sellerId": "8b6b",
           "quantity": 2,
           "priceAtPurchase": 25.99
-        },
-        {
-          "productId": "210",
-          "sellerId": "11",
-          "quantity": 2,
-          "priceAtPurchase": 25.99
         }
       ],
       "total": 51.98,

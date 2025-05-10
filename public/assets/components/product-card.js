@@ -1,18 +1,21 @@
+import { addToCart } from '../js/pages/cart.js';  // Import the addToCart function
+
 const getProductCard = (imgSrc, title, stars, price, cat, pid) => {
-  // Create the main card container
   const card = document.createElement("div");
   card.classList.add("product-card-container");
   card.setAttribute("data-id", pid);
-  card.setAttribute("data-category", cat); // Add category as data attribute for filtering
-  
-  // Format price to 2 decimal places
+  card.setAttribute("data-category", cat);
+
   const formattedPrice = parseFloat(price).toFixed(2);
-  
-  // Build the card HTML structure
+
+  // Ensure title is valid
+  const productTitle = title || "Untitled Product"; // Fallback if title is undefined
+  const imageSrc = imgSrc || '/default-image.jpg'; // Fallback if image is missing
+
   card.innerHTML = `
-    <img src="${imgSrc}" alt="${title.split(" ").join("-").toLowerCase()}" />
+    <img src="${imageSrc}" alt="${productTitle.split(" ").join("-").toLowerCase()}" />
     <div class="content">
-      <h3 class="title">${title}</h3>
+      <h3 class="title">${productTitle}</h3>
       <div class="stars">
         <span class="cat">${cat}</span>
         <span class="star">${stars}</span>
@@ -22,30 +25,51 @@ const getProductCard = (imgSrc, title, stars, price, cat, pid) => {
         <button data-pid="${pid}" class="add-to-cart">Add to Cart</button>
       </div>
     </div>`;
-  
-  // Add click event to navigate to product detail page
+
+  // Navigate to product details on image/title click
   card.querySelector('img').addEventListener('click', () => {
     window.location.href = `./product-details.html?id=${pid}`;
   });
-  
+
   card.querySelector('.title').addEventListener('click', () => {
     window.location.href = `./product-details.html?id=${pid}`;
   });
-  
-  // Add click event for add to cart button
-  card.querySelector('.add-to-cart').addEventListener('click', (e) => {
+
+  // Add to cart button logic
+  card.querySelector('.add-to-cart').addEventListener('click', async (e) => {
     e.stopPropagation();
-    // Here you would add your cart functionality
-    console.log(`Added product ${pid} to cart`);
-    // Show a quick feedback animation
+
     const button = e.target;
-    button.textContent = "Added!";
-    setTimeout(() => {
-      button.textContent = "Add to Cart";
-    }, 1500);
+    button.disabled = true;
+    button.textContent = "Adding...";
+
+    try {
+      const product = {
+        id: pid,
+        name: productTitle,
+        price: parseFloat(price)
+      };
+
+      await addToCart(product);
+
+      button.textContent = "Added!";
+      setTimeout(() => {
+        button.textContent = "Add to Cart";
+        button.disabled = false;
+      }, 1500);
+    } catch (err) {
+      console.error("Error adding product to cart:", err);
+      button.textContent = "Error!";
+      setTimeout(() => {
+        button.textContent = "Add to Cart";
+        button.disabled = false;
+      }, 1500);
+    }
   });
-  
+
   return card;
 };
 
+
 export default getProductCard;
+

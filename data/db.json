@@ -18,7 +18,7 @@
       "role": "customer",
       "address": "22 Nile St, Cairo",
       "phone": "01002136997",
-      "isActive": false
+      "isActive": true
     },
     {
       "id": "3",

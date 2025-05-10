@@ -1,1 +1,91 @@
-<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Page</title>
+    <link rel="stylesheet" href="./assets/css/register.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./assets/js/pages/register.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <img id="logo" src="./assets/images/Logo.png" alt="logo" />
+      <h1>SIGNUP</h1>
+      <p>Create your Account Now!</p>
+      <form action="" method="post">
+        <div class="form-group">
+          <input
+            id="name"
+            type="text"
+            placeholder="Full Name"
+            
+            tabindex="1"
+            autofocus
+          />
+          <p class="error-message"></p>
+        </div>
+        <div class="form-group">
+          <input
+            id="email"
+            type="text"
+            placeholder="Email"
+            
+            tabindex="2"
+          />
+          <p class="error-message"></p>
+        </div>
+        <div class="form-group">
+          <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            
+            tabindex="3"
+          />
+          <p class="error-message"></p>
+        </div>
+        <div class="form-group">
+          <input
+            id="address"
+            type="text"
+            placeholder="Address"
+
+            tabindex="4"
+          />
+          <p class="error-message"></p>
+        </div>
+        <div class="form-group">
+          <input
+            id="phone"
+            type="text"
+            placeholder="+201*********"
+
+            tabindex="4"
+          />
+          <p class="error-message"></p>
+        </div>
+
+        <div class="seller">
+          <input type="checkbox" name="seller" id="seller" />
+          <label for="seller">Are you a Seller?</label>
+        </div>
+
+        <button class="btn-login" type="submit" tabindex="5">SIGNUP</button>
+      </form>
+
+      <div class="signin">
+        <p>Do you have an Account?</p>
+        <a href="./login.html">Sign in</a>
+      </div>
+    </div>
+  </body>
+</html>

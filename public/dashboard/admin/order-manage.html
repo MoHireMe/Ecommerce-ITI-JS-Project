@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Management</title>
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Admin authentication check - runs immediately when loaded -->
+    <script type="module">
+      import hasAccess from '../../assets/js/admin-auth.js';
+      // Script will redirect if user doesn't have access
+      console.log('Admin access check completed:', hasAccess);
+    </script>
+    <script
+      type="module"
+      src="../../assets/js/dashboard/admin-order-manage.js"
+    ></script>
+  </head>
+  <body>
+    <div id="togglePanel">&#10095;</div>
+
+    <!-- Sidebar -->
+    <div id="dashboard-sidebar">
+      <ul class="sidebar-links">
+        <li><a href="user-manage.html"><i class="fa fa-users"></i> User Management</a></li>
+        <li><a href="order-manage.html"><i class="fa fa-shopping-cart"></i> Order Management</a></li>
+        <li><a href="product-manage.html"><i class="fa fa-box"></i> Products Management</a></li>
+      </ul>
+    </div>
+    
+    <div class="main-content">
+      <h1 class="page-title">Order Management</h1>
+      
+      <div class="table-container">
+        <table>
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <dialog id="product-dialog" class="order-details-dialog">
+      <!-- Order details will be populated here dynamically -->
+    </dialog>
+    
+    <!-- Confirmation Dialog -->
+    <dialog id="confirm-dialog" class="confirm-dialog">
+      <div class="dialog-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Confirm Deletion</h3>
+      <p id="confirm-message">Are you sure you want to delete this order? This action cannot be undone.</p>
+      <div class="dialog-buttons">
+        <button id="cancel-delete" class="btn btn-cancel">Cancel</button>
+        <button id="confirm-delete" class="btn btn-confirm">Delete</button>
+      </div>
+    </dialog>
+    
+    <script src="../../assets/js/dashboard/sidebar.js"></script>
+    <script>
+      // Add script to toggle main content margin when sidebar is expanded
+      document.addEventListener('DOMContentLoaded', function() {
+        const dashboardSidebar = document.getElementById('dashboard-sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const togglePanel = document.getElementById('togglePanel');
+        
+        if (dashboardSidebar && mainContent && togglePanel) {
+          togglePanel.addEventListener('click', () => {
+            mainContent.classList.toggle('sidebar-expanded');
+          });
+        }
+        
+        // Add status badge styling to order status cells
+        function styleStatusCells() {
+          const statusCells = document.querySelectorAll('td[data-status]');
+          statusCells.forEach(cell => {
+            const status = cell.getAttribute('data-status');
+            cell.innerHTML = `<span class="status-badge status-${status.toLowerCase()}">${status}</span>`;
+          });
+        }
+        
+        // Call this function after table is populated
+        // You may need to modify your admin-order-manage.js to call this function
+        // after the table data is loaded
+        window.styleStatusCells = styleStatusCells;
+      });
+    </script>
+  </body>
+</html>

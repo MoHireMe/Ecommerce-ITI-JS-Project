@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout</title>
+  <link rel="stylesheet" href="/assets/css/global.css" />
+  <link rel="stylesheet" href="/assets/css/checkout.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" defer src="./assets/js/pages/checkout.js"></script>
+</head>
+<body>
+  <div class="checkout-container">
+    <h1>Review Your Order</h1>
+
+    <div class="checkout-items" id="checkout-items">
+      <!-- Items will be populated by JavaScript -->
+    </div>
+
+    <div class="checkout-summary">
+      <p>
+        <strong>Total:</strong>
+        <span class="price-container">$<span id="checkout-total">0.00</span></span>
+      </p>
+      <button id="confirm-order-btn">Confirm Order</button>
+    </div>
+  </div>
+</body>
+</html>

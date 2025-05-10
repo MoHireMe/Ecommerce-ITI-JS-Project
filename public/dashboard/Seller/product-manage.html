@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seller Product Management</title>
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../admin/admin-style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Seller authentication check - runs immediately when loaded -->
+    <script type="module">
+      import hasAccess from '../../assets/js/seller-auth.js';
+      // Script will redirect if user doesn't have access
+      console.log('Seller access check completed:', hasAccess);
+    </script>
+    <script
+      type="module"
+      src="../../assets/js/dashboard/seller-product-manage.js"
+    ></script>
+    <style>
+      /* Fix for horizontal scrollbar */
+      .main-content {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      
+      /* Custom dialog styling */
+      .modal-dialog {
+        max-width: 800px;
+        width: 90%;
+        max-height: 85vh;
+        overflow-y: auto;
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 0;
+      }
+      
+      .dialog-form {
+        padding: 25px;
+      }
+      
+      .dialog-title {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: var(--secondary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 10px;
+      }
+      
+      .form-group {
+        margin-bottom: 15px;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+      
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        font-family: 'Poppins', sans-serif;
+      }
+      
+      .dialog-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      
+      /* Responsive table styling */
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 20px;
+        box-shadow: var(--shadow);
+        border-radius: var(--border-radius);
+        max-width: 100%; /* Ensure container doesn't overflow parent */
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+      }
+      
+      th, td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        overflow: hidden;
+        height: auto;
+      }
+      
+      /* Allow text wrapping for specific columns */
+      td:nth-child(2), /* Name column */
+      td:nth-child(3), /* Description column */
+      td:nth-child(4), /* Category column */
+      td:nth-child(8) { /* Image URL column */
+        white-space: normal;
+        word-wrap: break-word;
+        min-height: 60px;
+        vertical-align: middle;
+      }
+      
+      /* Keep other columns with nowrap */
+      td:nth-child(1), /* ID column */
+      td:nth-child(5), /* Price column */
+      td:nth-child(6), /* Stock column */
+      td:nth-child(7), /* Approved column */
+      td:last-child, 
+      td:nth-last-child(2) { /* Action buttons */
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      
+      th {
+        background-color: var(--light-gray);
+        font-weight: 600;
+        color: var(--secondary-color);
+        position: sticky;
+        top: 0;
+      }
+      
+      tbody tr:hover {
+        background-color: rgba(0, 200, 117, 0.05);
+      }
+      
+      /* Fixed width for each column */
+      td:nth-child(1), th:nth-child(1) { /* ID column */
+        width: 80px;
+        max-width: 80px;
+      }
+      
+      td:nth-child(2), th:nth-child(2) { /* Name column */
+        width: 150px;
+        max-width: 150px;
+      }
+      
+      td:nth-child(3), th:nth-child(3) { /* Description column */
+        width: 200px;
+        max-width: 200px;
+      }
+      
+      td:nth-child(4), th:nth-child(4) { /* Category column */
+        width: 120px;
+        max-width: 120px;
+      }
+      
+      td:nth-child(5), th:nth-child(5) { /* Price column */
+        width: 80px;
+        max-width: 80px;
+      }
+      
+      td:nth-child(6), th:nth-child(6) { /* Stock column */
+        width: 80px;
+        max-width: 80px;
+      }
+      
+      td:nth-child(7), th:nth-child(7) { /* Approved column */
+        width: 80px;
+        max-width: 80px;
+      }
+      
+      td:nth-child(8), th:nth-child(8) { /* Image URL column */
+        width: 350px;
+        max-width: 350px;
+      }
+      
+      /* Make action buttons more compact */
+      td:last-child, td:nth-last-child(2) {
+        white-space: nowrap;
+        width: 100px;
+        max-width: 100px;
+      }
+      
+      /* Button styling */
+      .del-btn, .edit-btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .edit-btn {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      
+      .edit-btn:hover {
+        background-color: #00b369;
+        box-shadow: 0 2px 5px rgba(0, 200, 117, 0.3);
+      }
+      
+      .del-btn {
+        background-color: #ff6b6b;
+        color: white;
+      }
+      
+      .del-btn:hover {
+        background-color: #ff5252;
+        box-shadow: 0 2px 5px rgba(255, 107, 107, 0.3);
+      }
+      
+      /* Danger button for confirmation dialog */
+      .btn-danger {
+        background-color: #ff6b6b;
+        color: white;
+      }
+      
+      .btn-danger:hover {
+        background-color: #ff5252;
+        box-shadow: 0 2px 5px rgba(255, 107, 107, 0.3);
+      }
+      
+      /* Dialog paragraph styling */
+      .dialog-form p {
+        margin-bottom: 20px;
+        line-height: 1.5;
+        color: var(--text-color);
+      }
+      
+      /* Success message styling */
+      .success-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #c8e6c9;
+        color: #2e7d32;
+        padding: 12px 20px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        animation: fadeInOut 3s ease-in-out;
+        z-index: 1000;
+      }
+      
+      @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateY(-20px); }
+        10% { opacity: 1; transform: translateY(0); }
+        80% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); }
+      }
+      
+      /* Image preview styling */
+      .image-preview-container {
+        margin-top: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        padding: 10px;
+        background-color: #f9f9f9;
+        text-align: center;
+      }
+      
+      .image-preview {
+        max-width: 100%;
+        height: auto;
+        max-height: 200px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+      }
+      
+      /* Product table image styling */
+      .product-table-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        transition: transform 0.2s ease;
+      }
+      
+      /* Column width adjustments */
+      table th:nth-child(6), /* Approved column */
+      table td:nth-child(6) {
+        min-width: 85px; /* Increased by 5px from default */
+        width: 85px;
+      }
+      
+      .product-table-image:hover {
+        transform: scale(1.1);
+      }
+      
+      .image-cell {
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px;
+      }
+      
+      /* Header container styling */
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      
+      .header-container .page-title {
+        margin: 0;
+      }
+      
+      .header-container .btn-primary {
+        background-color: #00c875; /* Using explicit color instead of variable */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .header-container .btn-primary:hover {
+        background-color: #00a65a;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="togglePanel">&#10095;</div>
+
+    <!-- Sidebar -->
+    <div id="dashboard-sidebar">
+      <ul class="sidebar-links">
+        <li><a href="product-manage.html"><i class="fa fa-box"></i> Product Management</a></li>
+        <li><a href="order-manage.html"><i class="fa fa-shopping-cart"></i> Order Management</a></li>
+      
+      </ul>
+    </div>
+    
+    <div class="main-content">
+      <div class="header-container">
+        <h1 class="page-title">Product Management</h1>
+        <button id="add-product-btn" class="btn btn-primary">Add a Product</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div> <!-- Close main-content div -->
+    
+    <dialog id="edit-dialog" class="modal-dialog">
+      <form method="dialog" id="edit-form" class="dialog-form">
+        <h3 class="dialog-title">Edit Product</h3>
+        <input type="hidden" id="edit-id" />
+        <div class="form-group">
+          <label for="edit-name">Name:</label>
+          <input type="text" id="edit-name" class="form-control" required minlength="3" maxlength="50" />
+        </div>
+        <div class="form-group">
+          <label for="edit-description">Description:</label>
+          <input type="text" id="edit-description" class="form-control" required minlength="10" maxlength="200" />
+        </div>
+        <div class="form-group">
+          <label for="edit-cat">Category:</label>
+          <select id="edit-cat" class="form-control">
+            <option value="Electronics">Electronics</option>
+            <option value="Sneakers">Sneakers</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-price">Price:</label>
+          <input type="number" id="edit-price" class="form-control" required min="0.01" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label for="edit-stock">Stock:</label>
+          <input type="number" id="edit-stock" class="form-control" required min="1" step="1" />
+        </div>
+        <div class="form-group">
+          <label for="edit-Image">Image URL:</label>
+          <input type="url" id="edit-Image" class="form-control" required placeholder="https://example.com/image.jpg" pattern="https?://.+" onchange="updateEditImagePreview()" />
+          <div class="image-preview-container">
+            <img id="edit-image-preview" src="" alt="Product image preview" class="image-preview" />
+          </div>
+        </div>
+        <div class="dialog-buttons">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="add-dialog" class="modal-dialog">
+      <form method="dialog" id="add-form" class="dialog-form">
+        <h3 class="dialog-title">Add Product</h3>
+        <div class="form-group">
+          <label for="add-name">Name:</label>
+          <input type="text" id="add-name" class="form-control" required minlength="3" maxlength="50" />
+        </div>
+        <div class="form-group">
+          <label for="add-description">Description:</label>
+          <input type="text" id="add-description" class="form-control" required minlength="10" maxlength="200" />
+        </div>
+        <div class="form-group">
+          <label for="add-cat">Category:</label>
+          <select id="add-cat" class="form-control">
+            <option value="Electronics">Electronics</option>
+            <option value="Sneakers">Sneakers</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="add-price">Price:</label>
+          <input type="number" id="add-price" class="form-control" required min="0.01" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label for="add-stock">Stock:</label>
+          <input type="number" id="add-stock" class="form-control" required min="1" step="1" />
+        </div>
+        <div class="form-group">
+          <label for="add-Image">Image URL:</label>
+          <input type="url" id="add-Image" class="form-control" required placeholder="https://example.com/image.jpg" pattern="https?://.+" />
+        </div>
+        <div class="dialog-buttons">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" id="cancel-add-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+    
+    <!-- Delete Confirmation Dialog -->
+    <dialog id="delete-confirm-dialog" class="modal-dialog">
+      <div class="dialog-form">
+        <h3 class="dialog-title">Confirm Deletion</h3>
+        <p>Are you sure you want to delete this product? This action cannot be undone.</p>
+        <input type="hidden" id="delete-product-id">
+        <div class="dialog-buttons">
+          <button id="confirm-delete-btn" class="btn btn-danger">Delete</button>
+          <button id="cancel-delete-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+    
+    <script src="../../assets/js/dashboard/sidebar.js"></script>
+  </body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" defer src="../assets/js/pages/user-orders.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; }
+    .navbar {
+      background: #fff;
+      padding: 10px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 30px;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+      font-size: 17px;
+      padding: 6px 14px;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .navbar a.active, .navbar a:hover {
+      background: #007bff;
+      color: #fff;
+    }
+    .orders-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 24px 32px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #333;
+    }
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .orders-table th, .orders-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .orders-table th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #495057;
+    }
+    .orders-table tr:hover {
+      background-color: #f5f5f5;
+    }
+    .order-status {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    .status-delivered {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status-shipped {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+    .status-cancelled {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .no-orders {
+      text-align: center;
+      padding: 30px;
+      color: #6c757d;
+      font-style: italic;
+    }
+    .order-details-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .order-details-btn:hover {
+      background: #0056b3;
+    }
+    #loading {
+      text-align: center;
+      padding: 20px;
+      color: #6c757d;
+    }
+    #error {
+      color: red;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+  <style>
+    /* Dialog styles */
+    dialog {
+      width: 80%;
+      max-width: 800px;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      position: relative; /* Added to make absolute positioning of children work */
+    }
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+    #product-dialog table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    #product-dialog th, #product-dialog td {
+      padding: 10px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    #product-dialog th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #495057;
+    }
+    #product-dialog tr:hover {
+      background-color: #f5f5f5;
+    }
+    #close-dialog-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #6c757d;
+    }
+    #close-dialog-btn:hover {
+      color: #343a40;
+    }
+    .dialog-title {
+      margin-top: 0;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .product-image {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .order-summary {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .order-summary p {
+      margin: 5px 0;
+    }
+    .order-total {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-top: 10px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="./user-profile.html">Edit profile</a></li>
+      <li><a href="./user-orders.html" class="active">Orders</a></li>
+    </ul>
+  </nav>
+  
+  <div class="orders-container">
+    <h2>My Orders</h2>
+    <div id="loading">Loading your orders...</div>
+    <div id="error"></div>
+    <div id="orders-content" style="display: none;">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Items</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="orders-table-body">
+          <!-- Orders will be populated here by JavaScript -->
+        </tbody>
+      </table>
+      <div id="no-orders" class="no-orders" style="display: none;">
+        You don't have any orders yet.
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog for order product details -->
+  <dialog id="product-dialog">
+    <!-- Content will be dynamically populated by JavaScript -->
+  </dialog>
+</body>
+</html>

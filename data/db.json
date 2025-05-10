@@ -1,9 +1,267 @@
 {
+  "users": [
+    {
+      "id": "1",
+      "name": "Alice Admin",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "role": "admin",
+      "address": "1 Admin Plaza",
+      "phone": "01002136997",
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "name": "Charlie Customer",
+      "email": "customer@example.com",
+      "password": "cust123",
+      "role": "customer",
+      "address": "22 Nile St, Cairo",
+      "phone": "01002136997",
+      "isActive": true
+    },
+    {
+      "id": "3",
+      "name": "Sam Seller",
+      "email": "seller@example.com",
+      "password": "seller123",
+      "role": "seller",
+      "address": "Mall Shop 7, Giza",
+      "phone": "01002136997",
+      "isActive": true
+    },
+    {
+      "id": "8b6b",
+      "name": "Mohammad",
+      "email": "mohammadashraf5000@gmail.com",
+      "password": "aksdlaskjh4",
+      "role": "customer",
+      "address": "hehe st , meheheh ave ,5th hehe district",
+      "phone": "01021310778",
+      "isActive": true
+    }
+  ],
   "products": [
     {
-      "id": 1,
-      "name": "Product 1",
-      "price": 100
+      "id": "101",
+      "sellerId": "3",
+      "name": "Wireless Mouse",
+      "description": "Ergonomic wireless mouse with 2.4GHz USB dongle",
+      "category": "Electronics",
+      "price": 25.99,
+      "stock": 100,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2lyZWxlc3MlMjBtb3VzZXxlbnwwfHwwfHx8MA%3D%3D",
+      "createdAt": "2025-04-28T10:00:00Z"
+    },
+    {
+      "id": "102",
+      "sellerId": "8b6b",
+      "name": "Mechanical Keyboard",
+      "description": "RGB Backlit mechanical keyboard with blue switches",
+      "category": "Electronics",
+      "price": "45",
+      "stock": "50",
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWVjaGFuaWNhbCUyMGtleWJvYXJkfGVufDB8fDB8fHww",
+      "createdAt": "2025-04-28T11:00:00Z"
+    },
+    {
+      "id": "201",
+      "sellerId": "3",
+      "name": "Bluetooth Speaker",
+      "description": "High-quality bluetooth speaker suitable for everyday use.",
+      "category": "Electronics",
+      "price": 85.65,
+      "stock": 146,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ymx1ZXRvb3RoJTIwc3BlYWtlcnxlbnwwfHwwfHx8MA%3D%3D",
+      "createdAt": "2025-05-03T15:21:00Z"
+    },
+    {
+      "id": "202",
+      "sellerId": "3",
+      "name": "Wireless Charger",
+      "description": "High-quality wireless charger suitable for everyday use.",
+      "category": "Electronics",
+      "price": 66.08,
+      "stock": 71,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1618677064524-58aa3077d724?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2lyZWxlc3MlMjBjaGFyZ2VyfGVufDB8fDB8fHww",
+      "createdAt": "2025-05-03T15:22:00Z"
+    },
+    {
+      "id": "203",
+      "sellerId": "3",
+      "name": "Smartphone Stand",
+      "description": "High-quality smartphone stand suitable for everyday use.",
+      "category": "Electronics",
+      "price": 76.59,
+      "stock": 119,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1586105251261-72a756497a11?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvbmUlMjBzdGFuZHxlbnwwfHwwfHx8MA%3D%3D",
+      "createdAt": "2025-05-03T15:23:00Z"
+    },
+    {
+      "id": "204",
+      "sellerId": "3",
+      "name": "USB-C Hub",
+      "description": "High-quality usb-c hub suitable for everyday use.",
+      "category": "Electronics",
+      "price": 33.14,
+      "stock": 71,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1661347998423-b15d37d6f61e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHVzYiUyMGh1YnxlbnwwfHwwfHx8MA%3D%3D",
+      "createdAt": "2025-05-03T15:24:00Z"
+    },
+    {
+      "id": "205",
+      "sellerId": "3",
+      "name": "Webcam",
+      "description": "High-quality webcam suitable for everyday use.",
+      "category": "Electronics",
+      "price": 25.63,
+      "stock": 84,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1591815302525-756a9bcc3425?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2ViY2FtfGVufDB8fDB8fHww",
+      "createdAt": "2025-05-03T15:25:00Z"
+    },
+    {
+      "id": "206",
+      "sellerId": "3",
+      "name": "Sneakers X1",
+      "description": "Comfortable running sneakers for all-day use.",
+      "category": "Sneakers",
+      "price": 69.99,
+      "stock": 300,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c25lYWtlcnN8ZW58MHx8MHx8fDA%3D",
+      "createdAt": "2025-05-03T15:26:00Z"
+    },
+    {
+      "id": "207",
+      "sellerId": "3",
+      "name": "Sporty Sneakers",
+      "description": "Durable sneakers for outdoor sports and exercise.",
+      "category": "Sneakers",
+      "price": 59.99,
+      "stock": 200,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1562183241-b937e95585b6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3BvcnQlMjBzaG9lc3xlbnwwfHwwfHx8MA%3D%3D",
+      "createdAt": "2025-05-03T15:27:00Z"
+    },
+    {
+      "id": "208",
+      "sellerId": "3",
+      "name": "Running Sneakers",
+      "description": "Lightweight sneakers for intense running sessions.",
+      "category": "Sneakers",
+      "price": 89.99,
+      "stock": 180,
+      "approved": true,
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cnVubmluZyUyMHNob2V8ZW58MHx8MHx8fDA%3D",
+      "createdAt": "2025-05-03T15:28:00Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "501",
+      "customerId": "8b6b",
+      "products": [
+        {
+          "productId": "101",
+          "quantity": 2,
+          "priceAtPurchase": 25.99
+        },
+        {
+          "productId": "102",
+          "quantity": 2,
+          "priceAtPurchase": 25.99
+        }
+      ],
+      "total": 51.98,
+      "status": "pending",
+      "createdAt": "2025-04-29T12:30:00Z"
+    },
+    {
+      "id": "d9c7",
+      "customerId": "8b6b",
+      "products": [
+        {
+          "id": "202",
+          "name": "Wireless Charger",
+          "price": 66.08,
+          "quantity": 5
+        },
+        {
+          "id": "201",
+          "name": "Bluetooth Speaker",
+          "price": 85.65,
+          "quantity": 1
+        },
+        {
+          "id": "204",
+          "name": "USB-C Hub",
+          "price": 33.14,
+          "quantity": 3
+        }
+      ],
+      "total": 416.05,
+      "status": "pending",
+      "createdAt": "2025-05-10T13:50:23.636Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "901",
+      "productId": 101,
+      "userId": 2,
+      "rating": 3,
+      "comment": "Very smooth and responsive!",
+      "createdAt": "2025-04-29T14:20:00Z"
+    },
+    {
+      "id": "902",
+      "productId": 101,
+      "userId": 2,
+      "rating": 5,
+      "comment": "Very smooth and responsive!",
+      "createdAt": "2025-04-29T14:20:00Z"
+    },
+    {
+      "id": "903",
+      "productId": 101,
+      "userId": "8b6b",
+      "rating": 4,
+      "comment": "Very smooth and responsive!",
+      "createdAt": "2025-04-29T14:20:00Z"
+    },
+    {
+      "id": "87ac",
+      "productId": "101",
+      "userId": "8b6b",
+      "userName": "Mohammad",
+      "rating": 3,
+      "comment": "meh",
+      "createdAt": "2025-05-09T12:00:06.477Z"
+    },
+    {
+      "id": "20db",
+      "productId": "101",
+      "userId": "8b6b",
+      "userName": "Mohammad",
+      "rating": 1,
+      "comment": "meh gedan",
+      "createdAt": "2025-05-09T12:00:33.049Z"
+    },
+    {
+      "id": "9cd9",
+      "productId": "101",
+      "userId": "8b6b",
+      "userName": "Mohammad",
+      "rating": 5,
+      "comment": "gamed",
+      "createdAt": "2025-05-09T12:33:27.664Z"
     }
   ]
 }

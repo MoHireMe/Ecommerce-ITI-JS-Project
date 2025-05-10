@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product List - Buy Hive</title>
+    <link rel="stylesheet" href="./assets/css/product-list.css" />
+    <link rel="stylesheet" href="./assets/css/global.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module">
+      import { isLoggedIn, checkUserRole } from './assets/js/auth.js';
+      
+      // Function to control UI elements based on authentication status
+      function setupAuthUI() {
+        // Store authentication state in a global variable
+        window.userAuthState = {
+          isLoggedIn: isLoggedIn(),
+          isCustomer: isLoggedIn() && checkUserRole('customer')
+        };
+        
+        // Add a class to the HTML element for CSS targeting
+        if (window.userAuthState.isLoggedIn) {
+          document.documentElement.classList.add('user-logged-in');
+          if (window.userAuthState.isCustomer) {
+            document.documentElement.classList.add('user-is-customer');
+          }
+        }
+      }
+      
+      // Run immediately
+      setupAuthUI();
+      
+      // Also add a DOMContentLoaded listener for any elements that might not be available yet
+      document.addEventListener('DOMContentLoaded', function() {
+        const loginBtn = document.querySelector('.login-btn');
+        const navButtons = document.querySelector('.nav-buttons');
+        const iconsDiv = document.querySelector('.icons');
+        
+        if (window.userAuthState.isLoggedIn) {
+          if (window.userAuthState.isCustomer) {
+            // If user is a customer, hide login button and show icons
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (navButtons) navButtons.style.display = 'none';
+            if (iconsDiv) iconsDiv.style.display = 'flex';
+          } else {
+            // For other roles, hide login button but don't show icons
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (navButtons) navButtons.style.display = 'none';
+            if (iconsDiv) iconsDiv.style.display = 'none';
+          }
+        } else {
+          // User is not logged in, show login button and hide icons
+          if (navButtons) navButtons.style.display = 'flex';
+          if (iconsDiv) iconsDiv.style.display = 'none';
+        }
+      });
+    </script>
+    <script type="module" defer src="./assets/js/pages/productlist.js"></script>
+  </head>
+  <body>
+    <div class="mobile-menu-button"><i class="fas fa-bars"></i></div>
+    <div class="mobile-sidebar">
+      <div class="close-btn"><i class="fas fa-times"></i></div>
+      <ul class="sidebar-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./product-list.html">Shop</a></li>
+     
+      </ul>
+    </div>
+    
+    <div class="container">
+      <nav class="main-nav">
+        <a href="./index.html" class="logo">
+          <img src="./assets/images/logo.png" alt="Buy Hive Logo" />
+        </a>
+        <ul class="nav-links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./product-list.html">Shop</a></li>
+        </ul>
+        <div class="nav-search">
+          <input type="text" id="nav-search-input" placeholder="Search for products..." />
+          <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="nav-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
+        </div>
+        <div class="icons">
+          <div class="user-icon-container">
+            <i class="fas fa-user" id="user-icon"></i>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="/profile/user-profile" class="user-dropdown-item">
+                <i class="fas fa-user-edit"></i> Edit Profile
+              </a>
+              <a href="/profile/user-orders" class="user-dropdown-item">
+                <i class="fas fa-shopping-bag"></i> Orders
+              </a>
+              <a href="#" class="user-dropdown-item" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+              </a>
+            </div>
+          </div>
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+      </nav>
+
+      <!-- Main content for product list will go here -->
+      <div class="product-list-container">
+        <!-- Products will be dynamically loaded here -->
+      </div>
+
+      <section class="info-section">
+        <div class="info-container">
+          <div class="info-column">
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">› Our Work</a></li>
+              <li><a href="#">› Club</a></li>
+              <li><a href="#">› News</a></li>
+              <li><a href="#">› Announcement</a></li>
+            </ul>
+          </div>
+          <div class="info-column">
+            <h4>Information</h4>
+            <ul>
+              <li><a href="#">› Price</a></li>
+              <li><a href="#">› Terms</a></li>
+              <li><a href="#">› Affiliates</a></li>
+              <li><a href="#">› Blog</a></li>
+            </ul>
+          </div>
+          <div class="info-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">› Documentation</a></li>
+              <li><a href="#">› FAQs</a></li>
+              <li><a href="#">› Forums</a></li>
+              <li><a href="#">› Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="main-footer">
+        <div class="footer-content">
+          <p>&copy; 2025 Buy Hive. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <div class="cart-sidebar">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <span class="close-cart"><i class="fas fa-times"></i></span>
+  </div>
+  <div class="cart-items">
+    <p class="empty-cart-msg">No items in the cart yet.</p>
+    <!-- Cart items will be inserted here -->
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      Total: $<span id="cart-total">0.00</span>
+    </div>
+    <button class="checkout-btn">Checkout</button>
+  </div>
+</div>
+
+    <script
+      src="https://kit.fontawesome.com/c49ef8856d.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./assets/js/main.js"></script>
+  </body>
+</html>

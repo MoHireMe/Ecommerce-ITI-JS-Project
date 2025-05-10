@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Management</title>
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Admin authentication check - runs immediately when loaded -->
+    <script type="module">
+      import hasAccess from '../../assets/js/admin-auth.js';
+      // Script will redirect if user doesn't have access
+      console.log('Admin access check completed:', hasAccess);
+    </script>
+    <script
+      type="module"
+      src="../../assets/js/dashboard/admin-product-manage.js"
+    ></script>
+  </head>
+  <body>
+    <div id="togglePanel">&#10095;</div>
+
+    <!-- Sidebar -->
+    <div id="dashboard-sidebar">
+      <ul class="sidebar-links">
+        <li><a href="user-manage.html"><i class="fa fa-users"></i> User Management</a></li>
+        <li><a href="order-manage.html"><i class="fa fa-shopping-cart"></i> Order Management</a></li>
+        <li><a href="product-manage.html"><i class="fa fa-box"></i> Products Management</a></li>
+      </ul>
+    </div>
+    
+    <div class="main-content">
+      <h1 class="page-title">Product Management</h1>
+      
+      <div class="table-container">
+        <table>
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <dialog id="edit-dialog">
+      <form method="dialog" id="edit-form">
+        <h3>Edit Product</h3>
+        <input type="hidden" id="edit-id" />
+        <div>
+          <label for="edit-name">Name:</label>
+          <input type="text" id="edit-name" />
+        </div>
+        <div>
+          <label for="edit-description">Description:</label>
+          <input type="text" id="edit-description" />
+        </div>
+        <div>
+          <label for="edit-cat">Category:</label>
+          <input type="text" id="edit-cat" />
+        </div>
+        <div>
+          <label for="edit-price">Price:</label>
+          <input type="text" id="edit-price" />
+        </div>
+        <div>
+          <label for="edit-stock">Stock:</label>
+          <input type="number" id="edit-stock" />
+        </div>
+        <div>
+          <label for="edit-Image">Image URL:</label>
+          <input type="text" id="edit-Image" />
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" id="cancel-btn" class="btn">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+    
+    <!-- Confirmation Dialog -->
+    <dialog id="confirm-dialog" class="confirm-dialog">
+      <div class="dialog-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Confirm Deletion</h3>
+      <p id="confirm-message">Are you sure you want to delete this product? This action cannot be undone.</p>
+      <div class="dialog-buttons">
+        <button id="cancel-delete" class="btn btn-cancel">Cancel</button>
+        <button id="confirm-delete" class="btn btn-confirm">Delete</button>
+      </div>
+    </dialog>
+    
+    <script src="../../assets/js/dashboard/sidebar.js"></script>
+  </body>
+</html>

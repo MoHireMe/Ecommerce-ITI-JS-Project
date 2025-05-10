@@ -260,9 +260,25 @@ const initProductList = async () => {
     paginationContainer.classList.add('pagination-container');
     productListContainer.appendChild(paginationContainer);
     
-    // Initialize with all products
-    currentProducts = [...allProducts];
+    // Check if a category filter is active from URL
+    if (currentCategory !== 'all') {
+      // Filter products by the category from URL
+      currentProducts = allProducts.filter(product => 
+        product.category.toLowerCase() === currentCategory.toLowerCase()
+      );
+    } else {
+      // Initialize with all products if no category filter
+      currentProducts = [...allProducts];
+    }
+    
+    // Display the filtered products
     displayProducts();
+    
+    // Update the dropdown to match the current category
+    const categoryDropdown = document.getElementById('category-filter');
+    if (categoryDropdown && currentCategory !== 'all') {
+      categoryDropdown.value = currentCategory;
+    }
     
   } catch (err) {
     console.error('Error loading products:', err);

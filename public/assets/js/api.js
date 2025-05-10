@@ -163,7 +163,7 @@ export async function getCartItems(orderId) {
 export async function submitOrder(order) {
   try {
     // Assuming you're using fetch to interact with the backend (db.json or API)
-    const response = await fetch('/api/orders', {
+    const response = await fetch('/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

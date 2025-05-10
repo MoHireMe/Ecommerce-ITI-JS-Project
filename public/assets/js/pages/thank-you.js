@@ -8,11 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const { products, total, date } = orderSummary;
 
-  // Generate a simple order number based on date (optional)
-  const orderNumber = `ORD-${new Date(date).getTime()}`;
 
   // Populate the order number and items
-  document.getElementById('order-number').textContent = orderNumber;
 
   const orderItemsContainer = document.getElementById('order-items');
   products.forEach(item => {
